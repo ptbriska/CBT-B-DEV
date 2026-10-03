@@ -1,194 +1,131 @@
-/* Reset & Base Setup */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+/**
+ * ROOT MODULE HEALTH CHECK
+ * Memastikan script root tidak corrupt & canvas siap digunakan
+ */
+(function initRootModule() {
+  const statusEl = document.getElementById('health-status');
+  
+  try {
+    // Registrasi variabel modul lokal root
+    window.ROOT_MODULE = {
+      loaded: true,
+      institution: "Briska Education Corporation",
+      timestamp: new Date().toISOString()
+    };
+
+    if (statusEl) {
+      statusEl.style.color = '#34d399';
+      statusEl.textContent = '● SYSTEM STATUS: ONLINE [ROOT OK]';
+    }
+    console.log('[ROOT-MOD] index.js loaded successfully.');
+  } catch (err) {
+    if (statusEl) {
+      statusEl.style.color = '#f87171';
+      statusEl.textContent = '🚨 SYSTEM STATUS: ROOT CORRUPT!';
+    }
+    console.error('[ROOT-MOD ERROR] Module initialization failed:', err);
+  }
+})();
+
+/**
+ * BACKGROUND CANVAS: Dynamic Particle Network Effect
+ */
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+
+let width, height;
+let particles = [];
+const mouse = { x: null, y: null, radius: 120 };
+
+function resizeCanvas() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
 }
 
-body {
-  background-color: #0b0f19;
-  color: #e2e8f0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  position: relative;
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+window.addEventListener('mousemove', (e) => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+
+window.addEventListener('mouseleave', () => {
+  mouse.x = null;
+  mouse.y = null;
+});
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
+    this.vx = (Math.random() - 0.5) * 1.2;
+    this.vy = (Math.random() - 0.5) * 1.2;
+    this.radius = Math.random() * 2 + 1;
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+
+    // Bounce off walls
+    if (this.x < 0 || this.x > width) this.vx *= -1;
+    if (this.y < 0 || this.y > height) this.vy *= -1;
+
+    // Interaction with mouse
+    if (mouse.x !== null && mouse.y !== null) {
+      const dx = mouse.x - this.x;
+      const dy = mouse.y - this.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < mouse.radius) {
+        const force = (mouse.radius - dist) / mouse.radius;
+        const angle = Math.atan2(dy, dx);
+        this.x -= Math.cos(angle) * force * 2;
+        this.y -= Math.sin(angle) * force * 2;
+      }
+    }
+  }
+
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(56, 189, 248, 0.7)';
+    ctx.fill();
+  }
 }
 
-/* Background Canvas */
-#bg-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+// Particle density based on screen size
+const particleCount = Math.floor((window.innerWidth * window.innerHeight) / 12000);
+for (let i = 0; i < particleCount; i++) {
+  particles.push(new Particle());
 }
 
-/* Welcome Card Glassmorphism */
-.welcome-card {
-  position: relative;
-  z-index: 2;
-  width: 90%;
-  max-width: 580px;
-  padding: 2.5rem;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(56, 189, 248, 0.2);
-  border-radius: 16px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
-              0 0 30px rgba(56, 189, 248, 0.1);
-  text-align: center;
+function animate() {
+  ctx.clearRect(0, 0, width, height);
+
+  // Connect particles with line if close enough
+  for (let i = 0; i < particles.length; i++) {
+    particles[i].update();
+    particles[i].draw();
+
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < 100) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(56, 189, 248, ${1 - dist / 100})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(animate);
 }
 
-/* Branding Lembaga */
-.institution-brand {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  color: #38bdf8;
-  margin-bottom: 0.8rem;
-  text-transform: uppercase;
-}
-
-.inst-icon {
-  font-size: 1.1rem;
-}
-
-.inst-name {
-  color: #e2e8f0;
-  border-bottom: 1px dashed rgba(56, 189, 248, 0.4);
-  padding-bottom: 2px;
-}
-
-/* Tech Badge */
-.tech-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  background: rgba(56, 189, 248, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: #38bdf8;
-  margin-bottom: 1.2rem;
-}
-
-.pulse-dot {
-  width: 8px;
-  height: 8px;
-  background-color: #38bdf8;
-  border-radius: 50%;
-  box-shadow: 0 0 8px #38bdf8;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(0.95); opacity: 0.7; }
-  50% { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.7; }
-}
-
-/* Typography */
-.title {
-  font-size: 2.1rem;
-  font-weight: 800;
-  line-height: 1.25;
-  letter-spacing: -0.5px;
-  margin-bottom: 0.8rem;
-  color: #f8fafc;
-}
-
-.highlight {
-  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.description {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: #94a3b8;
-  margin-bottom: 1.5rem;
-}
-
-/* Quote Box Motivasi Warm-Tech */
-.quote-box {
-  position: relative;
-  background: rgba(30, 41, 59, 0.6);
-  border-left: 3px solid #fbbf24;
-  border-radius: 8px;
-  padding: 12px 18px;
-  margin-bottom: 1.8rem;
-  text-align: left;
-}
-
-.quote-icon {
-  position: absolute;
-  top: -8px;
-  right: 12px;
-  font-size: 2.5rem;
-  line-height: 1;
-  color: rgba(251, 191, 36, 0.15);
-  font-family: Georgia, serif;
-}
-
-.quote-text {
-  font-size: 0.88rem;
-  font-style: italic;
-  color: #f1f5f9;
-  line-height: 1.5;
-}
-
-/* Action Button */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  padding: 14px 28px;
-  background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: 0.5px;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(2, 132, 199, 0.4);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(79, 70, 229, 0.6);
-  background: linear-gradient(135deg, #0369a1 0%, #4338ca 100%);
-}
-
-.btn-primary svg {
-  transition: transform 0.3s ease;
-}
-
-.btn-primary:hover svg {
-  transform: translateX(4px);
-}
-
-/* Health Check Footer */
-.status-footer {
-  margin-top: 1.5rem;
-  font-size: 0.75rem;
-  font-family: monospace;
-  color: #64748b;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  padding-top: 1rem;
-}
+animate();

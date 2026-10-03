@@ -28,7 +28,7 @@ const notifBox = document.getElementById('notification-box');
 const nextBox = document.getElementById('next-action-container');
 
 // URL Web App Google Apps Script (Ubah dengan URL deployment Anda jika sudah ada)
-const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL'; 
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2MPM2sFzYOggxYdwLHhfglOCCTz4Reu8cYh5IsbxmHj6MYaPBXDYO0jpCYSXyxeI6/exec'; 
 
 btnVerify.addEventListener('click', async () => {
   const kodeKegiatan = document.getElementById('input-kegiatan').value.trim();

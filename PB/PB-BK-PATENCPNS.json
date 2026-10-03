@@ -1,0 +1,362 @@
+{
+  "kode_ujian": "PB-BK-PATENCPNS",
+  "nama_kegiatan": "SIMULASI OSN GEOGRAFI 2026",
+  "sistem_ujian": "CBT",
+  "mode_ujian": "LATIHAN",
+  "token_reguler": "TESTING001",
+  "token_vip": "vip001",
+  "token_master": "Master001",
+  "token_pembahasan": "BAHAS2026",
+  "total_timer_menit": 120,
+  "kalimat_motivasi": "Keberhasilan bukanlah kebetulan, melainkan hasil dari kerja keras.",
+  "nama_sistem_cbt": "CBT/CAT/UTBK Versi 3",
+  "penyelenggara": "Briska Education Corporation",
+  "lembaga": "Brand Pena Bisa - Briska Education Corporation",
+  "alamat_lembaga": "Jl. Pendidikan No. 100, Banjarmasin",
+  "logo": "https://lh3.googleusercontent.com/d/1TYEl9QOZV3EU5p3peLGaaUZcjrOISSSz",
+
+"exam_rules": {
+    // -------------------------------------------------------------
+    // 1. KONTROL WAKTU & NAVIGASI SUBTEST (Skenario UTBK vs OSN/Umum)
+    // -------------------------------------------------------------
+    "is_timed_per_subtest": false,
+    "allow_fallback_subtest": true,
+    "auto_advance_subtest_on_timeout": true,
+    "allow_early_subtest_submit": true,
+    "require_confirmation_on_subtest_submit": true,
+
+    // -------------------------------------------------------------
+    // 2. KONTROL THRESHOLD & TARGET COUNTER (Skenario SKD / Target PTN)
+    // -------------------------------------------------------------
+    "enable_threshold_tracking": false,
+    "enable_realtime_threshold_counter": false,
+
+    // -------------------------------------------------------------
+    // 3. KONTROL ACAK / RANDOMIZATION (Skenario Anti-Contek)
+    // -------------------------------------------------------------
+    "randomize_questions": false,
+    "randomize_options": false,
+
+    // -------------------------------------------------------------
+    // 4. KONTROL PERILAKU SISWA & INTEGRITAS (Skenario Strict Exam)
+    // -------------------------------------------------------------
+    "enable_adaptive_hints": false,
+    "show_instant_feedback": false,
+    "allow_view_explanation_during_exam": false,
+    "block_copy_paste": true,
+    "enable_proctoring_tab_lock": false
+  },
+
+  "sections": [
+    {
+      "subtest_id": "SUB-FIS-MODERN",
+      "subtest_order": 1,
+      "subtest_name": "Fisika Modern",
+      "duration_minutes": 120
+    }
+  ],
+
+  "thresholds": {
+    "SUB-TWK": {
+      "subtest_name": "Tes Wawasan Kebangsaan",
+      "passing_grade_score": 65.0,
+      "target_label": "Ambang Batas TWK (Kedinasan)"
+    },
+    "SUB-TIU": {
+      "subtest_name": "Tes Inteligensia Umum",
+      "passing_grade_score": 80.0,
+      "target_label": "Ambang Batas TIU (Kedinasan)"
+    },
+    "SUB-TKP": {
+      "subtest_name": "Tes Karakteristik Pribadi",
+      "passing_grade_score": 156.0,
+      "target_label": "Ambang Batas TKP (Kedinasan)"
+    },
+    "SUB-PU": {
+      "subtest_name": "Penalaran Umum (UTBK)",
+      "passing_grade_score": 600.0,
+      "target_label": "Target Skor PTN Impian"
+    }
+  },
+
+  "scoring_rules": {
+    "1A": {
+      "deskripsi": "Single Choice - Standar",
+      "skor_benar": 1.0,
+      "skor_salah": 0.0,
+      "skor_kosong": 0.0
+    },
+    "1B": {
+      "deskripsi": "Single Choice - Penalty / Minus",
+      "skor_benar": 4.0,
+      "skor_salah": -1.0,
+      "skor_kosong": 0.0
+    },
+    "1C": {
+      "deskripsi": "Single Choice - Weighted Level",
+      "bobot_level": {
+        "E": 1.0,
+        "M": 3.0,
+        "H": 5.0
+      },
+      "skor_salah": 0.0,
+      "skor_kosong": 0.0
+    },
+    "2A": {
+      "deskripsi": "Multiple Response - Equal Credit",
+      "skor_benar_semua": 1.0,
+      "skor_salah": 0.0,
+      "skor_kosong": 0.0
+    },
+    "3A": {
+      "deskripsi": "Short Answer - Angka",
+      "skor_benar": 1.0,
+      "skor_salah": 0.0,
+      "skor_kosong": 0.0
+    },
+    "3B": {
+      "deskripsi": "Short Answer - Kata",
+      "skor_benar": 1.0,
+      "skor_salah": 0.0,
+      "skor_kosong": 0.0
+    },
+    "4A": {
+      "deskripsi": "True/False Checklist - Per Statement",
+      "skor_per_baris_benar": 1.0,
+      "skor_per_baris_salah": 0.0,
+      "skor_per_baris_kosong": 0.0
+    },
+    "5A": {
+      "deskripsi": "Weighted Options / Skala Likert (TKP)",
+      "skor_maksimal": 5.0,
+      "skor_salah": 0.0,
+      "skor_kosong": 0.0
+    }
+  },
+
+  "questions": [
+    {
+      "question_id": "FIS-MOD-Q001",
+      "no": 1,
+      "tipe": "1A",
+      "subtest_id": "SUB-FIS-MODERN",
+      "subtest_name": "Fisika Modern",
+      "section_id": "SEC-FIS-KUANTUM",
+      "section_name": "Fisika Kuantum",
+      "topic_id": "TOP-FOTON-FOTOLISTRIK",
+      "topic_name": "Sensor Foton & Efek Fotolistrik",
+      "competency_id": "COMP-DESAIN-SISTEM",
+      "competency_name": "Analisis Desain Sistem Kuantum",
+      "level": "H",
+      "max_score": 1.0,
+      "soal": "Anda diminta merancang sebuah sensor foton tunggal berefisiensi tinggi untuk komunikasi kuantum. Jika fungsi kerja bahan katoda $W_0$dapat dimodifikasi, skema mana yang paling tepat untuk mendesain sistem yang meminimalkan waktu tanggap (delay) emisi elektron sekaligus mempertahankan sensitivitas pada frekuensi batas$\\nu_0$?",
+      "options": [
+        { "key": "A", "text": "Mengurangi $W_0$hingga mendekati nol dan mengoperasikannya pada frekuensi$\\nu < \\nu_0$." },
+        { "key": "B", "text": "Menggunakan bahan dengan $W_0$sesuai frekuensi ambang$\\nu_0$dan menembakinya dengan foton berenergi$h\\nu \\gg W_0$." },
+        { "key": "C", "text": "Menaikkan $W_0$ melebihi energi foton datang untuk mencegah penumpukan muatan." },
+        { "key": "D", "text": "Menggunakan bahan isolator ideal agar elektron terpental lebih cepat" },
+        { "key": "E", "text": "Mengatur frekuensi foton tepat sama dengan frekuensi ambang $\\nu_0$ tanpa energi kinetik sisa." }
+      ],
+      "gambar": "https://lh3.googleusercontent.com/d/1Qihyo0sOJj6cvJNjQ_n3GqEAZP5TUdMQ",
+      "kunci": "B",
+      "pembahasan": "Untuk meminimalkan delay, energi kinetik maksimum ($E_k = h\\nu - W_0$) harus cukup besar agar elektron keluar dengan laju tinggi dari permukaan katoda, yang didapat dengan memilih$h\\nu \\gg W_0$."
+    },
+    {
+      "question_id": "FIS-MOD-Q002",
+      "no": 2,
+      "tipe": "1B",
+      "subtest_id": "SUB-FIS-MODERN",
+      "subtest_name": "Fisika Modern",
+      "section_id": "SEC-FIS-KUANTUM",
+      "section_name": "Fisika Kuantum",
+      "topic_id": "TOP-KOTAK-POTENSIAL",
+      "topic_name": "Sumur Potensial 1-Dimensi",
+      "competency_id": "COMP-REKAYASA-TRANSISI",
+      "competency_name": "Rekayasa Transisi Energi",
+      "level": "H",
+      "max_score": 4.0,
+      "soal": "Anda diminta merekayasa lebar potensial kotak 1-dimensi $L$agar panjang gelombang foton yang dipancarkan saat transisi$n=2$ke$n=1$ menjadi 4 kali lebih pendek.\n$$\\Delta E = \\frac{3h^2}{8mL^2} = \\frac{hc}{\\lambda}$$\nPerhatikan opsi rancangan berikut:\na. Mengubah lebar kotak potensial menjadi $2L$.\nb. Mengubah lebar kotak potensial menjadi $\\frac{1}{2}L$.\nc. Mengubah lebar kotak potensial menjadi $\\frac{1}{4}L$.\nd. Mengubah lebar kotak potensial menjadi $4L$.\nKarena $\\Delta E \\propto \\frac{1}{\\lambda} \\propto \\frac{1}{L^2}$, agar panjang gelombang$\\lambda' = \\frac{1}{4}\\lambda$, energi$\\Delta E$harus naik 4 kali lipat. Hal ini dicapai jika$L' = \\sqrt{\\frac{1}{4}}L = \\frac{1}{2}L$ (Pernyataan b).\nModifikasi dimensi lebar kotak yang benar adalah...",
+      "options": [
+        { "key": "A", "text": "Opsi a saja yang benar" },
+        { "key": "B", "text": "Opsi a dan b benar" },
+        { "key": "C", "text": "Opsi b dan c benar" },
+        { "key": "D", "text": "Opsi c saja yang benar" },
+        { "key": "E", "text": "Opsi d saja yang benar" }
+      ],
+      "gambar": "https://wallpaperaccess.com/full/14489801.png",
+      "kunci": "B",
+      "pembahasan": "Karena $\\Delta E \\propto \\frac{1}{\\lambda} \\propto \\frac{1}{L^2}$, agar panjang gelombang$\\lambda' = \\frac{1}{4}\\lambda$, energi$\\Delta E$harus naik 4 kali lipat. Hal ini dicapai jika$L' = \\sqrt{\\frac{1}{4}}L = \\frac{1}{2}L$ (Pernyataan b)."
+    },
+    {
+      "question_id": "FIS-MOD-Q003",
+      "no": 3,
+      "tipe": "1C",
+      "subtest_id": "SUB-FIS-MODERN",
+      "subtest_name": "Fisika Modern",
+      "section_id": "SEC-FIS-KUANTUM",
+      "section_name": "Fisika Kuantum",
+      "topic_id": "TOP-KOTAK-POTENSIAL",
+      "topic_name": "Sumur Potensial 1-Dimensi",
+      "competency_id": "COMP-PERANGKAP-KUANTUM",
+      "competency_name": "Perancangan Perangkap Kuantum",
+      "level": "H",
+      "max_score": 5.0,
+      "soal": "Anda mendesain perangkap kuantum potensial kotak 1-dimensi berpanjang $L$untuk memancarkan foton dengan panjang gelombang tertentu pada transisi tingkat energi$n=2$ke$n=1$. Jika Anda merancang ulang perangkap tersebut agar panjang gelombang foton yang dipancarkan menjadi 4 kali lebih pendek ($\\lambda' = \\frac{1}{4}\\lambda$), bagaimana Anda harus merusak/mengubah lebar potensial kotak$L$?\nBeda energi $\\Delta E \\propto \\frac{1}{\\lambda} \\propto \\frac{1}{L^2}$. Agar energi foton$\\Delta E$naik 4 kali lipat (panjang gelombang$\\frac{1}{4}\\lambda$), lebar kotak$L'$harus diubah menjadi$\\sqrt{\\frac{1}{4}}L = \\frac{1}{2}L$.",
+      "options": [
+        { "key": "A", "text": "Mengubah lebar kotak menjadi $2L$" },
+        { "key": "B", "text": "Mengubah lebar kotak menjadi $\\frac{1}{2}L$" },
+        { "key": "C", "text": "Mengubah lebar kotak menjadi $\\frac{1}{4}L$" },
+        { "key": "D", "text": "Mengubah lebar kotak menjadi $4L$" },
+        { "key": "E", "text": "Mengubah lebar kotak menjadi $\\frac{1}{16}L$" }
+      ],
+      "gambar": "",
+      "kunci": "B",
+      "pembahasan": "Beda energi $\\Delta E \\propto \\frac{1}{\\lambda} \\propto \\frac{1}{L^2}$. Agar energi foton$\\Delta E$naik 4 kali lipat (panjang gelombang$\\frac{1}{4}\\lambda$), lebar kotak$L'$harus diubah menjadi$\\sqrt{\\frac{1}{4}}L = \\frac{1}{2}L$"
+    },
+    {
+      "question_id": "FIS-MOD-Q004",
+      "no": 4,
+      "tipe": "2A",
+      "subtest_id": "SUB-FIS-MODERN",
+      "subtest_name": "Fisika Modern",
+      "section_id": "SEC-FIS-KUANTUM",
+      "section_name": "Fisika Kuantum",
+      "topic_id": "TOP-QUANTUM-DOT",
+      "topic_name": "Fabrikasi Quantum Dot",
+      "competency_id": "COMP-MULTIPLE-ANALYSIS",
+      "competency_name": "Analisis Parameter Multivariabel",
+      "level": "H",
+      "max_score": 1.0,
+      "soal": "Sebuah tim peneliti merekayasa sistem quantum dot berbasis sumur potensial tak hingga. Manakah dari langkah-langkah fabrikasi berikut yang valid untuk meningkatkan frekuensi foton yang diemisikan saat transisi dari keadaan tereksitasi pertama ke keadaan dasar?\nFrekuensi $\\nu \\propto \\Delta E = \\frac{h^2 (n_f^2 - n_i^2)}{8m L^2}$. Frekuensi meningkat jika lebar$L$memperkecil (A), massa$m$memperkecil (B), atau beda$n$ diperbesar (D).",
+      "options": [
+        { "key": "A", "text": "Memperkecil dimensi ukuran (lebar) quantum dot" },
+        { "key": "B", "text": "Mengganti partikel dengan partikel kuantum berspesifikasi massa efektif lebih kecil" },
+        { "key": "C", "text": "Memperbesar lebar sumur potensial kuantum" },
+        { "key": "D", "text": "Mengubah transisi agar berlangsung dari $n=3$ke$n=1$" },
+        { "key": "E", "text": "Mengisi sumur potensial dengan partikel bermassa efektif lebih besar" }
+      ],
+      "gambar": "",
+      "kunci": [
+        "A",
+        "B",
+        "D"
+      ],
+      "pembahasan": "Frekuensi $\\nu \\propto \\Delta E = \\frac{h^2 (n_f^2 - n_i^2)}{8m L^2}$. Frekuensi meningkat jika lebar$L$memperkecil (A), massa$m$memperkecil (B), atau beda$n$ diperbesar (D)."
+    },
+    {
+      "question_id": "FIS-MOD-Q005",
+      "no": 5,
+      "tipe": "3A",
+      "subtest_id": "SUB-FIS-MODERN",
+      "subtest_name": "Fisika Modern",
+      "section_id": "SEC-FIS-KUANTUM",
+      "section_name": "Fisika Kuantum",
+      "topic_id": "TOP-STOPPING-POTENTIAL",
+      "topic_name": "Potensial Penghenti (Stopping Potential)",
+      "competency_id": "COMP-KALKULASI-KUANTUM",
+      "competency_name": "Kalkulasi Kuantitatif Fotonik",
+      "level": "H",
+      "max_score": 1.0,
+      "soal": "Anda mendesain transmisi eksperimen efek fotolistrik. Katoda disinari radiasi elektromagnetik dengan panjang gelombang sedemikian rupa sehingga energi fotonnya adalah $5\\text{ eV}$. Jika bahan katoda memiliki fungsi kerja$2\\text{ eV}$, berapakah nilai potensial penghenti (stopping potential) dalam satuan Volt yang harus dipasang pada rangkaian agar arus fotolistrik tepat menjadi nol?\n$E_k = h\\nu - W_0 \\Rightarrow e V_0 = 5\\text{ eV} - 2\\text{ eV} = 3\\text{ eV}$. Maka nilai potensial penghenti$V_0 = 3\\text{ V}$.",
+      "options": [],
+      "gambar": "",
+      "kunci": [
+        "3",
+        "3.0",
+        "3V",
+        "3 Volt"
+      ],
+      "pembahasan": "$E_k = h\\nu - W_0 \\Rightarrow e V_0 = 5\\text{ eV} - 2\\text{ eV} = 3\\text{ eV}$. Maka nilai potensial penghenti$V_0 = 3\\text{ V}$."
+    },
+    {
+      "question_id": "FIS-MOD-Q006",
+      "no": 6,
+      "tipe": "3B",
+      "subtest_id": "SUB-FIS-MODERN",
+      "subtest_name": "Fisika Modern",
+      "section_id": "SEC-FIS-KUANTUM",
+      "section_name": "Fisika Kuantum",
+      "topic_id": "TOP-QUANTUM-TUNNELING",
+      "topic_name": "Efek Terobosan Kuantum",
+      "competency_id": "COMP-TERMINOLOGI",
+      "competency_name": "Identifikasi Fenomena Kuantum",
+      "level": "H",
+      "max_score": 1.0,
+      "soal": "Fenomena penerobosan partikel melalui rintangan potensial yang lebih tinggi dari energi total partikel tersebut—yang menjadi prinsip dasar dalam perancangan mikroskop STM (Scanning Tunneling Microscope) dan memori flash—disebut efek...\nEfek Terobosan Kuantum (Quantum Tunneling) adalah fenomena di mana partikel menembus penghalang potensial yang secara klasik tidak mungkin dilalui.",
+      "options": [],
+      "gambar": "",
+      "kunci": [
+        "Terobosan Kuantum",
+        "terobosan kuantum",
+        "Quantum Tunneling",
+        "quantum tunneling",
+        "Efek Terobosan Kuantum"
+      ],
+      "pembahasan": "Efek Terobosan Kuantum (Quantum Tunneling) adalah fenomena di mana partikel menembus penghalang potensial yang secara klasik tidak mungkin dilalui."
+    },
+    {
+      "question_id": "FIS-MOD-Q007",
+      "no": 7,
+      "tipe": "4A",
+      "subtest_id": "SUB-FIS-MODERN",
+      "subtest_name": "Fisika Modern",
+      "section_id": "SEC-FIS-KUANTUM",
+      "section_name": "Fisika Kuantum",
+      "topic_id": "TOP-PRINSIP-KUANTUM",
+      "topic_name": "Prinsip-Prinsip Dasar Kuantum",
+      "competency_id": "COMP-EVALUASI-KONSEP",
+      "competency_name": "Evaluasi Pernyataan Teoritis",
+      "level": "H",
+      "max_score": 5.0,
+      "soal": "A: Salah (Intensitas menambah jumlah elektron, bukan energi kinetik). B: Benar ($p=h/\\lambda$). C: Benar ($\\Delta x \\Delta p \\ge \\hbar/2$). D: Salah ($\\lambda = h/mv$,$v$kecil membuat$\\lambda$ lebih panjang). E: Benar (Hipotesis Planck).\nEvaluasilah rancangan eksperimen dan konsep Fisika Kuantum berikut (Tentukan Benar atau Salah):",
+      "options": [
+        { "key": "A", "text": "Menambah intensitas cahaya pada efek fotolistrik akan memperbesar energi kinetik maksimum fotoelektron." },
+        { "key": "B", "text": "Efek Compton membuktikan bahwa foton membawa momentum linier yang bergantung pada panjang gelombangnya." },
+        { "key": "C", "text": "Prinsip ketidakpastian Heisenberg melarang pengukuran posisi dan momentum partikel secara presisi mutlak secara bersamaan." },
+        { "key": "D", "text": "Menurut hipotesis de Broglie, partikel yang bergerak lebih lambat akan memiliki panjang gelombang yang lebih pendek." },
+        { "key": "E", "text": "Radiasi benda hitam hanya dapat dijelaskan secara tepat jika energi gelombang terkuantisasi." }
+      ],
+      "gambar": "",
+      "kunci": [
+        "S",
+        "B",
+        "B",
+        "S",
+        "B"
+      ],
+      "pembahasan": "A: Salah (Intensitas menambah jumlah elektron, bukan energi kinetik). B: Benar ($p=h/\\lambda$). C: Benar ($\\Delta x \\Delta p \\ge \\hbar/2$). D: Salah ($\\lambda = h/mv$,$v$kecil membuat$\\lambda$ lebih panjang). E: Benar (Hipotesis Planck)."
+    },
+    {
+      "question_id": "FIS-MOD-Q008",
+      "no": 8,
+      "tipe": "5A",
+      "subtest_id": "SUB-FIS-MODERN",
+      "subtest_name": "Fisika Modern",
+      "section_id": "SEC-FIS-KUANTUM",
+      "section_name": "Fisika Kuantum",
+      "topic_id": "TOP-DEKOHERENSI-QUBIT",
+      "topic_name": "Stabilitas & Dekoherensi Qubit",
+      "competency_id": "COMP-EVALUASI-STRATEGI",
+      "competency_name": "Evaluasi Pendekatan Komputasi Kuantum",
+      "level": "H",
+      "max_score": 5.0,
+      "soal": "Sebagai tim ahli, Anda diminta mengevaluasi usulan rancangan sistem komputasi kuantum berbasis qubit spin. Langkah pendekatan paling efektif untuk menjaga stabilitas qubit dari dekoherensi akibat lingkungan luar adalah...",
+      "options": [
+        { "key": "A", "text": "Mengisolasi sistem kuantum pada suhu mendekati $0\\text{ K}$ dan menggunakan material superkonduktor terlindungi magnetik." },
+        { "key": "B", "text": "Meningkatkan suhu operasional sistem agar laju transfer data antar qubit semakin cepat." },
+        { "key": "C", "text": "Mengabaikan gangguan magnetik luar dan menambah jumlah laser pembaca status qubit secara konstan." },
+        { "key": "D", "text": "Memperbesar frekuensi interaksi sistem dengan atmosfer terbuka untuk menyeimbangkan energi." },
+        { "key": "E", "text": "Membiarkan sistem berinteraksi secara acak dengan lingkungan thermal untuk mempercepat proses entanglement." }
+      ],
+      "gambar": "",
+      "kunci": {
+        "A": 2,
+        "B": 3,
+        "C": 5,
+        "D": 4,
+        "E": 1
+      },
+      "pembahasan": "Mengisolasi pada suhu murni dekat nol mutlak serta pelindungan magnetik (Opsi A) adalah strategi ilmiah terbaik untuk mencegah dekoherensi kuantum (Skor 5)."
+    }
+  ]
+}

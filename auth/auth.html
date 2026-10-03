@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Otentikasi Peserta - Briska Education Corporation</title>
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+  <main class="auth-container">
+    
+    <!-- Header Modul -->
+    <header class="auth-header">
+      <div class="institution-tag">🏛️ BRISKA EDUCATION CORPORATION</div>
+      <h2>VERIFIKASI & OTENTIKASI PESERTA</h2>
+      <p>Masukkan Kode Kegiatan, Username, dan Token Anda untuk membuka akses portal.</p>
+    </header>
+
+    <!-- Form Verification (Input Atas) -->
+    <section class="verify-box">
+      <div class="input-group">
+        <label for="input-kegiatan">Kode Kegiatan (Identitas Sheet)</label>
+        <input type="text" id="input-kegiatan" placeholder="Contoh: PB-BK-PATENCPNS" autocomplete="off">
+      </div>
+
+      <div class="input-grid">
+        <div class="input-group">
+          <label for="input-username">Username Peserta</label>
+          <input type="text" id="input-username" placeholder="Contoh: SUBS.PTBRISKA" autocomplete="off">
+        </div>
+        <div class="input-group">
+          <label for="input-token">User Token / Password</label>
+          <input type="password" id="input-token" placeholder="Masukkan Kode Token" autocomplete="off">
+        </div>
+      </div>
+
+      <button id="btn-verify" class="btn-check">
+        <span>🔍 CEK VERIFIKASI PESERTA</span>
+      </button>
+    </section>
+
+    <!-- Card Notifikasi Dynamic (Gagal / Berhasil) -->
+    <section id="notification-box" class="notif-card hidden"></section>
+
+    <!-- Section Auto-Fill Data Peserta (Fields 3 - 16) -->
+    <section class="autofill-section">
+      <h3 class="section-title">📋 Informasi Detail Kepesertaan</h3>
+      
+      <div class="autofill-grid">
+        <div class="info-group">
+          <label>Status Kepesertaan</label>
+          <input type="text" id="info-status" class="field-autofill" readonly placeholder="Terisi otomatis...">
+        </div>
+        <div class="info-group">
+          <label>Kategori Brand</label>
+          <input type="text" id="info-kategoriBrand" class="field-autofill" readonly placeholder="Terisi otomatis...">
+        </div>
+        <div class="info-group">
+          <label>Kode Kegiatan</label>
+          <input type="text" id="info-kodeKegiatan" class="field-autofill" readonly placeholder="Terisi otomatis...">
+        </div>
+        <div class="info-group">
+          <label>Bidang / Kategori</label>
+          <input type="text" id="info-bidangKegiatan" class="field-autofill" readonly placeholder="Terisi otomatis...">
+        </div>
+        <div class="info-group">
+          <label>Skema Tarif</label>
+          <input type="text" id="info-skemaTarif" class="field-autofill" readonly placeholder="Terisi otomatis...">
+        </div>
+        <div class="info-group">
+          <label>Nama Lengkap</label>
+          <input type="text" id="info-namaLengkap" class="field-autofill" readonly placeholder="Terisi otomatis...">
+        </div>
+        <div class="info-group">
+          <label>No. HP / WhatsApp</label>
+          <input type="text" id="info-nomorHp" class="field-autofill" readonly placeholder="Terisi otomatis...">
+        </div>
+        <div class="info-group">
+          <label>Email Terverifikasi</label>
+          <input type="text" id="info-email" class="field-autofill" readonly placeholder="Terisi otomatis...">
+        </div>
+        <div class="info-group">
+          <label>Jenis Kelamin</label>
+          <input type="text" id="info-jenisKelamin" class="field-autofill" readonly placeholder="Terisi otomatis...">
+        </div>
+        <div class="info-group">
+          <label>Asal Instansi / Sekolah / Kampus</label>
+          <input type="text" id="info-asalInstansi" class="field-autofill" readonly placeholder="Terisi otomatis...">
+        </div>
+        <div class="info-group">
+          <label>Pekerjaan / Jurusan</label>
+          <input type="text" id="info-pekerjaanJurusan" class="field-autofill" readonly placeholder="Terisi otomatis...">
+        </div>
+        <div class="info-group">
+          <label>NIK / NISN / NIM</label>
+          <input type="text" id="info-nomorIdentitas" class="field-autofill" readonly placeholder="Terisi otomatis...">
+        </div>
+        <div class="info-group">
+          <label>Asal Kabupaten / Kota</label>
+          <input type="text" id="info-asalKabupaten" class="field-autofill" readonly placeholder="Terisi otomatis...">
+        </div>
+        <div class="info-group">
+          <label>Asal Provinsi</label>
+          <input type="text" id="info-asalProvinsi" class="field-autofill" readonly placeholder="Terisi otomatis...">
+        </div>
+      </div>
+    </section>
+
+    <!-- Action Next Button (Muncul Saat Valid) -->
+    <div id="next-action-container" class="next-box hidden">
+      <a href="../guide/guidetest.html" class="btn-next">
+        LANJUT KE PETUNJUK UJIAN ➔
+      </a>
+    </div>
+
+    <!-- Health Status Bar Modul Auth -->
+    <footer class="auth-footer">
+      <span id="auth-health-status">Checking Auth Module...</span>
+    </footer>
+
+  </main>
+
+  <script src="auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CBT System - Welcome</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- Canvas Background Dinamis -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Container Utama -->
+  <main class="welcome-card">
+    <div class="tech-badge">
+      <span class="pulse-dot"></span> CBT / CAT SYSTEM v2.0
+    </div>
+
+    <h1 class="title">EVALUASI AKADEMIK <br><span class="highlight">BERBASIS DIGITAL</span></h1>
+    
+    <p class="description">
+      Platform ujian terintegrasi dengan sistem keamanan terisolasi, rekapitulasi real-time, dan analitik performa presisi tinggi.
+    </p>
+
+    <div class="action-box">
+      <a href="auth/auth.html" class="btn-primary" id="btn-start">
+        <span>MASUK KE UJIAN</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </div>
+
+    <!-- Status Self-Health Check untuk Root Module -->
+    <div class="status-footer">
+      <span id="health-status">System Status: Checking Root Modules...</span>
+    </div>
+  </main>
+
+  <script src="index.js"></script>
+</body>
+</html>

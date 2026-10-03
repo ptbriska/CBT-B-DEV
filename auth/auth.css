@@ -1,0 +1,255 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: #0b0f19;
+  color: #e2e8f0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 820px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 1.8rem;
+}
+
+.institution-tag {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #38bdf8;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+
+.auth-header h2 {
+  font-size: 1.6rem;
+  color: #f8fafc;
+  margin-bottom: 6px;
+}
+
+.auth-header p {
+  font-size: 0.88rem;
+  color: #94a3b8;
+}
+
+/* Verification Form */
+.verify-box {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .input-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.input-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-bottom: 6px;
+}
+
+.input-group input {
+  padding: 10px 14px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.input-group input:focus {
+  border-color: #38bdf8;
+}
+
+/* Orange Check Button */
+.btn-check {
+  width: 100%;
+  padding: 12px;
+  background: #d97706;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  margin-top: 6px;
+}
+
+.btn-check:hover {
+  background: #b45309;
+  transform: translateY(-1px);
+}
+
+/* Dynamic Notification Cards */
+.notif-card {
+  padding: 1.2rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.notif-card.error {
+  background: #450a0a;
+  border: 1px solid #f87171;
+  color: #fca5a5;
+}
+
+.notif-card.error strong {
+  color: #ffffff;
+}
+
+.notif-card.success {
+  background: #064e3b;
+  border: 1px solid #34d399;
+  color: #a7f3d0;
+}
+
+.btn-wa-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 8px 18px;
+  background: #25d366;
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.btn-wa-admin:hover {
+  background: #1da851;
+}
+
+/* Autofill Grid Section */
+.autofill-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1.2rem;
+}
+
+.section-title {
+  font-size: 1rem;
+  color: #f1f5f9;
+  margin-bottom: 1rem;
+}
+
+.autofill-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .autofill-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.info-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-group label {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.field-autofill {
+  padding: 9px 12px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  color: #e2e8f0;
+  font-size: 0.88rem;
+  outline: none;
+}
+
+/* Status Green Highlight when Verified */
+.field-autofill.verified-badge {
+  color: #34d399;
+  font-weight: 700;
+  border-color: #059669;
+  background: rgba(6, 78, 59, 0.2);
+}
+
+/* Next Action Box */
+.next-box {
+  margin-top: 1.8rem;
+  text-align: center;
+}
+
+.btn-next {
+  display: inline-block;
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
+  transition: all 0.3s;
+}
+
+.btn-next:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.6);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.auth-footer {
+  margin-top: 1.5rem;
+  font-size: 0.75rem;
+  font-family: monospace;
+  color: #64748b;
+  text-align: center;
+}

@@ -14,26 +14,34 @@
     <header class="auth-header">
       <div class="institution-tag">🏛️ BRISKA EDUCATION CORPORATION</div>
       <h2>VERIFIKASI & OTENTIKASI PESERTA</h2>
-      <p>Masukkan Kode Kegiatan, Username, dan Token Anda untuk membuka akses portal.</p>
+      <p>Pilih jalur verifikasi sesuai hak akses kredensial yang Anda miliki.</p>
     </header>
 
-    <!-- Form Verification (Input Atas) -->
-    <section class="verify-box">
-      <!-- Input Kode Kegiatan -->
+    <!-- Main Shared Input: Kode Kegiatan -->
+    <div class="shared-input-box">
       <div class="input-group">
-        <label for="input-kegiatan">Kode Kegiatan (Identitas Sheet & File Soal)</label>
-        <input type="text" id="input-kegiatan" placeholder="Contoh: PB-BK-PATENCPNS" autocomplete="off">
+        <label for="input-kegiatan">📌 Kode Kegiatan / Identitas Soal (Wajib)</label>
+        <input type="text" id="input-kegiatan" placeholder="Contoh: BK-PATENCPNS" autocomplete="off">
       </div>
+    </div>
 
-      <!-- Special Fast-Pass Token Input (Bypass GAS Spreadsheet) -->
+    <!-- BOX 1: JALUR SPESIAL FAST-PASS (VIP & MASTER DEVELOPER) -->
+    <section class="verify-box fastpass-box">
+      <div class="box-badge amber-badge">⚡ JALUR SPESIAL FAST-PASS</div>
       <div class="input-group special-pass-group">
-        <label for="input-fastpass">⚡ Fast-Pass Access Token (Khusus VIP / Master Developer - Opsional)</label>
-        <input type="password" id="input-fastpass" placeholder="Masukkan Token VIP / Master untuk Bypass Verifikasi" autocomplete="off">
+        <label for="input-fastpass">Fast-Pass Access Token (VIP / Master Developer)</label>
+        <input type="password" id="input-fastpass" placeholder="Masukkan Kode Token VIP / Master untuk Bypass" autocomplete="off">
       </div>
+      <button id="btn-fastpass-verify" class="btn-check btn-amber">
+        <span>⚡ VERIFIKASI FAST-PASS (VIP / MASTER)</span>
+      </button>
+    </section>
 
-      <div class="divider-or"><span>ATAU MASUK VIA KREDENSIAL REGULER</span></div>
+    <div class="divider-or"><span>ATAU MASUK VIA KREDENSIAL REGULER</span></div>
 
-      <!-- Input Reguler (Username & User Token) -->
+    <!-- BOX 2: JALUR REGULER PESERTA -->
+    <section class="verify-box reguler-box">
+      <div class="box-badge cyan-badge">🔑 JALUR REGULER PESERTA</div>
       <div class="input-grid">
         <div class="input-group">
           <label for="input-username">Username Peserta</label>
@@ -44,9 +52,8 @@
           <input type="password" id="input-token" placeholder="Masukkan Kode Token Reguler" autocomplete="off">
         </div>
       </div>
-
-      <button id="btn-verify" class="btn-check">
-        <span>🔍 CEK VERIFIKASI PESERTA</span>
+      <button id="btn-reguler-verify" class="btn-check btn-blue">
+        <span>🔍 CEK VERIFIKASI REGULER</span>
       </button>
     </section>
 

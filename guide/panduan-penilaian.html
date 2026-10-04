@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panduan Penilaian Skor - CBT Online</title>
+  
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Marked.js untuk render Markdown ke HTML -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 20%, #0284c7 0%, #0f172a 60%, #030712 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 30px 16px;
+      position: relative;
+    }
+
+    /* Ambient Glow Background */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .guide-container {
+      position: relative;
+      z-index: 1;
+      max-width: 880px;
+      margin: 0 auto;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 36px;
+      border-radius: 20px;
+      box-shadow: 0 0 35px rgba(56, 189, 248, 0.2), 0 25px 50px rgba(0, 0, 0, 0.6);
+      line-height: 1.7;
+    }
+
+    /* Close Window Button Styling */
+    .btn-close-window {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 24px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-close-window:hover {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: #38bdf8;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+    }
+
+    /* Styling Render Markdown Elements */
+    #markdown-content h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #f8fafc;
+      border-bottom: 2px solid rgba(56, 189, 248, 0.3);
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+    }
+
+    #markdown-content h2 {
+      font-size: 1.28rem;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-top: 30px;
+      margin-bottom: 14px;
+      letter-spacing: 0.2px;
+    }
+
+    #markdown-content h3 {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #fbbf24;
+      margin-top: 22px;
+      margin-bottom: 10px;
+    }
+
+    #markdown-content p {
+      color: #94a3b8;
+      margin-bottom: 14px;
+      font-size: 0.95rem;
+    }
+
+    #markdown-content ul, #markdown-content ol {
+      margin-left: 20px;
+      margin-bottom: 16px;
+      color: #cbd5e1;
+      font-size: 0.93rem;
+    }
+
+    #markdown-content li {
+      margin-bottom: 6px;
+    }
+
+    #markdown-content hr {
+      border: none;
+      height: 1px;
+      background: rgba(56, 189, 248, 0.2);
+      margin: 28px 0;
+    }
+
+    /* Pill-style Code Badges */
+    #markdown-content code {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    /* Glassmorphism Table Styling */
+    #markdown-content table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 24px 0;
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    #markdown-content th {
+      background: rgba(15, 23, 42, 0.8);
+      color: #38bdf8;
+      font-weight: 700;
+      padding: 12px 14px;
+      text-align: left;
+      font-size: 0.88rem;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    #markdown-content td {
+      padding: 12px 14px;
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    #markdown-content tr:last-child td {
+      border-bottom: none;
+    }
+
+    #markdown-content tr:hover td {
+      background: rgba(56, 189, 248, 0.05);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-container">
+    <button class="btn-close-window" onclick="window.close()">
+      <i class="fas fa-times"></i> Tutup Halaman Ini
+    </button>
+    
+    <!-- Tempat isi Markdown di-render -->
+    <div id="markdown-content">Memuat panduan...</div>
+  </div>
+
+  <script>
+    const markdownText = `# PANDUAN PENILAIAN & TIPE SOAL (PESERTA UJIAN)
+
+Dokumen ini berisi informasi mengenai tipe-tipe soal dan sistem penilaian (*scoring*) yang berlaku dalam sistem Ujian Online / CBT.
+
+---
+
+## 1. Ringkasan Tipe Soal & Sistem Penilaian
+
+### Tipe 1: Single Response (Pilihan Ganda 1 Jawaban)
+Pilih **1 jawaban paling tepat** dari pilihan yang tersedia.
+
+* **1A (Standar):** Benar = \`+1\` | Salah = \`0\` | Kosong = \`0\`
+* **1B (Sistem Minus):** Benar = \`+4\` | Salah = \`-1\` | Kosong = \`0\` *(Hati-hati dalam menebak jawaban)*
+* **1C (Bobot Kesulitan):** Skor disesuaikan dengan tingkat kesulitan soal:
+  * *Mudah (Easy)* = \`+1\`
+  * *Sedang (Medium)* = \`+3\`
+  * *Sulit (Hard)* = \`+5\`
+  * *Salah / Kosong* = \`0\`
+
+---
+
+### Tipe 2: Multiple Response (Pilihan Ganda >1 Jawaban)
+Pilih **semua opsi yang benar**. Jawaban benar berjumlah lebih dari satu.
+
+* **2A (Equal Credit):** Benar Sempurna (semua opsi tepat) = \`+1\` | Salah / Kurang Tepat / Kosong = \`0\`
+
+---
+
+### Tipe 3: Short Answer (Isian Singkat)
+Ketik jawaban langsung pada kolom teks yang disediakan tanpa memilih opsi.
+
+* **3A (Isian Angka):** Masukkan nilai angka presisi. Sesuai = \`+1\` | Salah / Kosong = \`0\`
+* **3B (Isian Kata):** Masukkan kata kunci utama. Sesuai = \`+1\` | Salah / Kosong = \`0\` *(Sistem mengabaikan huruf besar/kecil)*
+
+---
+
+### Tipe 4: True / False (Pernyataan Majemuk / Checklist)
+Tentukan status **Benar (B)** atau **Salah (S)** pada setiap baris pernyataan yang disediakan.
+
+* **4A (Per Statement):** Penilaian dihitung per baris pernyataan yang dijawab dengan tepat.
+  * Tiap baris tepat = \`+1\` (Maksimal skor = total baris)
+  * Tiap baris salah / tidak diisi = \`0\`
+
+---
+
+### Tipe 5: Weighted Options (Opsi Berbobot / Skala)
+Tipe soal penilaian sikap/karakteristik (misal: Tes Karakteristik Pribadi). 
+
+* **5A (Opsi Berbobot):** Tidak ada jawaban salah (skor 0) kecuali jika soal tidak diisi. Setiap opsi pilihan (A, B, C, D, E) memiliki bobot nilai tersendiri mulai dari **1 hingga 5**.
+
+---
+
+## 2. Tabel Ringkasan Aturan Penilaian
+
+| Kode | Jenis Soal | Cara Menjawab | Skor Benar | Skor Salah | Skor Kosong |
+| :---: | :--- | :--- | :---: | :---: | :---: |
+| **1A** | Pilihan Ganda | Pilih 1 Jawaban | +1 | 0 | 0 |
+| **1B** | Pilihan Ganda (Minus) | Pilih 1 Jawaban | +4 | -1 | 0 |
+| **1C** | Pilihan Ganda (Bobot) | Pilih 1 Jawaban | +1 / +3 / +5 | 0 | 0 |
+| **2A** | Jawaban Majemuk | Pilih Semua Opsi Benar | +1 | 0 | 0 |
+| **3A** | Isian Angka | Ketik Angka | +1 | 0 | 0 |
+| **3B** | Isian Kata | Ketik Kata Kunci | +1 | 0 | 0 |
+| **4A** | Checklist (B/S) | Pilih B/S per Baris | +1 per baris | 0 | 0 |
+| **5A** | Opsi Berbobot (Skala) | Pilih 1 Jawaban | 1 s.d. 5 | 0 | 0 |`;
+
+    document.getElementById('markdown-content').innerHTML = marked.parse(markdownText);
+  </script>
+</body>
+</html>

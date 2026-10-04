@@ -7,7 +7,7 @@
 
 const ScoringEngine = (function () {
   // Webhook Default GAS (Penerima Data Analitik)
-  const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwrFDLCJOZzbpFtGxrguEWb9ZuXLWh9N6e9g2jQVuWpYqvWNavBRnkgLUkVymgLNPzMLw/exec";
+  const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyRN59LWciJUsqai5Pe3hssSD34hoo-_wv7CoySF8HzLSiOFiC0zYlPJgjIOqFeUt4U/exec";
 
   /**
    * Fungsi Utama: Menerima config soal, data user, dan jawaban mentah, 

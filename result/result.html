@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ringkasan Hasil Ujian - CBT Versi 3</title>
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- MathJax Configuration & CDN -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+  <link rel="stylesheet" href="result.css">
+</head>
+<body>
+
+  <div id="result-app-root" class="result-container">
+    
+    <!-- WATERMARK HAK CIPTA -->
+    <div class="watermark-bg">ASET BRISKA</div>
+
+    <!-- KOP SURAT / INSTANSI -->
+    <header class="kop-surat">
+      <img id="res-logo" src="https://lh3.googleusercontent.com/d/1TYEl9QOZV3EU5p3peLGaaUZcjrOISSSz" alt="Logo" class="kop-logo">
+      <div class="kop-info">
+        <h2 id="res-lembaga">BRISKA EDUCATION CORPORATION</h2>
+        <h4 id="res-nama-kegiatan">SIMULASI UJIAN ONLINE CBT V3</h4>
+        <p id="res-alamat">Jl. Pendidikan No. 100, Banjarmasin</p>
+      </div>
+    </header>
+
+    <!-- KARTU IDENTITAS PESERTA -->
+    <section class="user-card">
+      <div class="user-card-item"><strong>Nama Peserta:</strong> <span id="res-user-name">-</span></div>
+      <div class="user-card-item"><strong>ID Peserta / Username:</strong> <span id="res-user-id">-</span></div>
+      <div class="user-card-item"><strong>Kode Ujian:</strong> <span id="res-kode-ujian">-</span></div>
+      <div class="user-card-item"><strong>Waktu Selesai:</strong> <span id="res-timestamp">-</span></div>
+    </section>
+
+    <!-- CARDS RINGKASAN SKOR UTAMA -->
+    <section class="score-summary-grid">
+      <div class="score-card card-total">
+        <span class="score-label">Total Skor</span>
+        <div id="res-total-score" class="score-value">0</div>
+      </div>
+      <div class="score-card card-max">
+        <span class="score-label">Skor Maksimal</span>
+        <div id="res-max-score" class="score-value">0</div>
+      </div>
+      <div class="score-card card-accuracy">
+        <span class="score-label">Akurasi (%)</span>
+        <div id="res-accuracy" class="score-value">0%</div>
+      </div>
+    </section>
+
+    <!-- DETAIL STATISTIK BENAR / SALAH / KOSONG / DURASI -->
+    <section class="stats-bar">
+      <div class="stat-item text-success">
+        <i class="fas fa-check-circle"></i> Benar
+        <strong id="res-count-benar">0</strong>
+      </div>
+      <div class="stat-item text-danger">
+        <i class="fas fa-times-circle"></i> Salah
+        <strong id="res-count-salah">0</strong>
+      </div>
+      <div class="stat-item text-warning">
+        <i class="fas fa-minus-circle"></i> Kosong
+        <strong id="res-count-kosong">0</strong>
+      </div>
+      <div class="stat-item text-info">
+        <i class="fas fa-stopwatch"></i> Durasi
+        <strong id="res-duration">0m 0s</strong>
+      </div>
+    </section>
+
+    <!-- BANNER PELANGGARAN SECURITY (JIKA ADA) -->
+    <div id="sec-warning-banner" class="security-banner hidden">
+      <i class="fas fa-shield-alt"></i>
+      <div>
+        <strong>Catatan Keamanan Ujian:</strong>
+        <span id="res-sec-logs-text">-</span>
+      </div>
+    </div>
+
+    <!-- PREVIEW TEASER 3 SOAL PEMBAHASAN -->
+    <section class="teaser-section">
+      <div class="teaser-header">
+        <h3><i class="fas fa-eye"></i> Preview Pembahasan (3 Soal Pertama)</h3>
+        <button onclick="window.print()" class="btn-print-preview">
+          <i class="fas fa-print"></i> Cetak Ringkasan
+        </button>
+      </div>
+
+      <div id="teaser-soal-list" class="teaser-list">
+        <!-- Render 3 Soal Teaser via JS -->
+      </div>
+    </section>
+
+    <!-- PAYWALL BANNER TOKEN PEMBAHASAN -->
+    <section class="paywall-card">
+      <h3><i class="fas fa-lock"></i> Buka Seluruh Pembahasan & Full Student Report</h3>
+      <p>Sisa <strong id="res-sisa-soal-count">0</strong> soal beserta Analisis Topik & Kompetensi masih terkunci. Masukkan Token Pembahasan untuk membuka laporan lengkap.</p>
+
+      <div class="token-form">
+        <input type="text" id="input-token-pembahasan" placeholder="Ketik Token Pembahasan..." autocomplete="off">
+        <button type="button" onclick="verifikasiTokenPembahasan()" class="btn-unlock">
+          <i class="fas fa-key"></i> Buka Akses
+        </button>
+      </div>
+
+      <a id="link-wa-admin" href="#" target="_blank" class="link-wa-admin">
+        <i class="fab fa-whatsapp"></i> Belum punya token? Hubungi Admin via WhatsApp
+      </a>
+    </section>
+
+    <!-- FOOTER NAVIGASI -->
+    <footer class="result-footer">
+      <button type="button" onclick="kembaliKeGuide()" class="btn-home">
+        <i class="fas fa-home"></i> Kembali ke Halaman Utama
+      </button>
+    </footer>
+
+  </div>
+
+  <script src="result.js"></script>
+</body>
+</html>

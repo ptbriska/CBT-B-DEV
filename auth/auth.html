@@ -19,19 +19,29 @@
 
     <!-- Form Verification (Input Atas) -->
     <section class="verify-box">
+      <!-- Input Kode Kegiatan -->
       <div class="input-group">
-        <label for="input-kegiatan">Kode Kegiatan (Identitas Sheet)</label>
+        <label for="input-kegiatan">Kode Kegiatan (Identitas Sheet & File Soal)</label>
         <input type="text" id="input-kegiatan" placeholder="Contoh: PB-BK-PATENCPNS" autocomplete="off">
       </div>
 
+      <!-- Special Fast-Pass Token Input (Bypass GAS Spreadsheet) -->
+      <div class="input-group special-pass-group">
+        <label for="input-fastpass">⚡ Fast-Pass Access Token (Khusus VIP / Master Developer - Opsional)</label>
+        <input type="password" id="input-fastpass" placeholder="Masukkan Token VIP / Master untuk Bypass Verifikasi" autocomplete="off">
+      </div>
+
+      <div class="divider-or"><span>ATAU MASUK VIA KREDENSIAL REGULER</span></div>
+
+      <!-- Input Reguler (Username & User Token) -->
       <div class="input-grid">
         <div class="input-group">
           <label for="input-username">Username Peserta</label>
           <input type="text" id="input-username" placeholder="Contoh: SUBS.PTBRISKA" autocomplete="off">
         </div>
         <div class="input-group">
-          <label for="input-token">User Token / Password</label>
-          <input type="password" id="input-token" placeholder="Masukkan Kode Token" autocomplete="off">
+          <label for="input-token">User Token / Password Reguler</label>
+          <input type="password" id="input-token" placeholder="Masukkan Kode Token Reguler" autocomplete="off">
         </div>
       </div>
 
@@ -40,10 +50,10 @@
       </button>
     </section>
 
-    <!-- Card Notifikasi Dynamic (Gagal / Berhasil) -->
+    <!-- Card Notifikasi Dynamic (Gagal / Berhasil / Fast-Pass) -->
     <section id="notification-box" class="notif-card hidden"></section>
 
-    <!-- Section Auto-Fill Data Peserta (Fields 3 - 16) -->
+    <!-- Section Auto-Fill / Manual-Fill Data Peserta (Fields 3 - 16) -->
     <section class="autofill-section">
       <h3 class="section-title">📋 Informasi Detail Kepesertaan</h3>
       

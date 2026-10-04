@@ -15,31 +15,16 @@
   "alamat_lembaga": "Jl. Pendidikan No. 100, Banjarmasin",
   "logo": "https://lh3.googleusercontent.com/d/1TYEl9QOZV3EU5p3peLGaaUZcjrOISSSz",
 
-"exam_rules": {
-    // -------------------------------------------------------------
-    // 1. KONTROL WAKTU & NAVIGASI SUBTEST (Skenario UTBK vs OSN/Umum)
-    // -------------------------------------------------------------
+  "exam_rules": {
     "is_timed_per_subtest": false,
     "allow_fallback_subtest": true,
     "auto_advance_subtest_on_timeout": true,
     "allow_early_subtest_submit": true,
     "require_confirmation_on_subtest_submit": true,
-
-    // -------------------------------------------------------------
-    // 2. KONTROL THRESHOLD & TARGET COUNTER (Skenario SKD / Target PTN)
-    // -------------------------------------------------------------
     "enable_threshold_tracking": false,
     "enable_realtime_threshold_counter": false,
-
-    // -------------------------------------------------------------
-    // 3. KONTROL ACAK / RANDOMIZATION (Skenario Anti-Contek)
-    // -------------------------------------------------------------
     "randomize_questions": false,
     "randomize_options": false,
-
-    // -------------------------------------------------------------
-    // 4. KONTROL PERILAKU SISWA & INTEGRITAS (Skenario Strict Exam)
-    // -------------------------------------------------------------
     "enable_adaptive_hints": false,
     "show_instant_feedback": false,
     "allow_view_explanation_during_exam": false,

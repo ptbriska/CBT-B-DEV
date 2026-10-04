@@ -1,0 +1,359 @@
+:root {
+  --primary: #0284c7;
+  --primary-dark: #0369a1;
+  --secondary: #4f46e5;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --warning: #d97706;
+  --muted: #64748b;
+  --bg-body: #f8fafc;
+  --card-bg: #ffffff;
+  --border-color: #e2e8f0;
+  --text-dark: #0f172a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-dark);
+  line-height: 1.6;
+  padding: 24px 12px;
+}
+
+.report-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.card-box {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Kop Surat */
+.report-header-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 90px;
+  padding: 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px 12px 0 0;
+}
+
+.brand-logo {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  max-height: 65px;
+  width: auto;
+}
+
+.brand-text-center {
+  text-align: center;
+  padding: 0 80px;
+}
+
+.cbt-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.lembaga-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 2px 0;
+}
+
+.alamat-text {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.btn-print {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--secondary);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-print:hover {
+  background: #4338ca;
+}
+
+.report-main-title h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--secondary);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* Identitas Grid */
+.identity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  font-size: 0.88rem;
+  color: #334155;
+  margin-top: 10px;
+}
+
+.id-item span {
+  color: var(--muted);
+  display: block;
+  font-size: 0.78rem;
+}
+
+/* Dashboard Score Cards */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.score-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+
+.score-card.primary { background: #eff6ff; border-color: #bfdbfe; }
+.score-card.success { background: #f0fdf4; border-color: #bbf7d0; }
+.score-card.info { background: #f0f9ff; border-color: #bae6fd; }
+.score-card.danger { background: #fef2f2; border-color: #fecaca; }
+.score-card.warning { background: #fefce8; border-color: #fef08a; }
+
+.card-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+.card-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 4px 0;
+}
+
+.card-value .max-val {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.card-desc {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* Progress Mini */
+.progress-bg {
+  background: #e2e8f0;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.progress-bar {
+  background: var(--primary);
+  height: 100%;
+}
+
+.progress-mini {
+  background: #e2e8f0;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  display: inline-block;
+  width: 70px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.progress-mini-bar {
+  height: 100%;
+}
+
+.bg-success { background-color: var(--success); }
+.bg-warning { background-color: var(--warning); }
+.bg-danger { background-color: var(--danger); }
+
+/* Tabel Styles */
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.premium-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.premium-table th, .premium-table td {
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  text-align: left;
+}
+
+.premium-table th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #475569;
+}
+
+.compact-table td {
+  padding: 8px 10px;
+  font-size: 0.8rem;
+}
+
+/* Review Cards */
+.review-card-item {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 16px;
+  background: #ffffff;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.q-number {
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.q-tags {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-left: 8px;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.status-badge.bg-success { background: #dcfce7; color: #14532d; }
+.status-badge.bg-danger { background: #fee2e2; color: #7f1d1d; }
+.status-badge.bg-warning { background: #fef9c3; color: #713f12; }
+.status-badge.bg-muted { background: #f1f5f9; color: #475569; }
+
+.q-text {
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.q-image img {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 12px;
+}
+
+/* Motivation Banner */
+.motivation-banner {
+  background: #fefce8;
+  border: 1px solid #fef08a;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.quote-icon {
+  font-size: 2rem;
+  color: #ca8a04;
+  line-height: 1;
+}
+
+.motivation-text {
+  color: #854d0e;
+  font-weight: 600;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.text-success { color: var(--success); }
+.text-danger { color: var(--danger); }
+.text-muted { color: var(--muted); }
+.font-weight-bold { font-weight: 700; }
+
+/* MEDIA PRINT (CETAK RAPOR PDF) */
+@media print {
+  body {
+    background: #ffffff;
+    padding: 0;
+  }
+  .report-wrapper {
+    max-width: 100%;
+  }
+  .btn-print {
+    display: none !important;
+  }
+  .card-box, .report-header-card, .review-card-item {
+    box-shadow: none !important;
+    border-color: #cbd5e1 !important;
+    page-break-inside: avoid;
+  }
+}
+
+@media (max-width: 768px) {
+  .brand-text-center {
+    padding: 0 10px;
+  }
+  .btn-print {
+    position: static;
+    transform: none;
+    margin-top: 10px;
+    width: 100%;
+  }
+  .report-header-card {
+    flex-direction: column;
+  }
+  .brand-logo {
+    position: static;
+    transform: none;
+    margin-bottom: 10px;
+  }
+}

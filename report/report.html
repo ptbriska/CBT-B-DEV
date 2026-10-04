@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0284c7">
+  <title>Rapor & Pembahasan Hasil Ujian - CBT Versi 3</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1TYEl9QOZV3EU5p3peLGaaUZcjrOISSSz">
+
+  <!-- Font Modern Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- CSS Utama Modul Report -->
+  <link rel="stylesheet" href="report.css">
+
+  <!-- Konfigurasi MathJax v3 Inline $ Sebelum Script Loaded -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+  <!-- ROOT CONTAINER RAPOR UTAMA -->
+  <main class="report-wrapper">
+    <div id="pembahasan-container" aria-live="polite" aria-busy="true">
+      
+      <!-- Loading State -->
+      <div class="card-box report-loading-state">
+        <i class="fas fa-circle-notch fa-spin fa-3x" style="color: var(--primary);"></i>
+        <h3>Memuat Laporan & Pembahasan Ujian...</h3>
+        <p>Mohon tunggu sebentar, sistem sedang menyiapkan analisis performa dan pembahasan lengkap hasil ujian Anda.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <noscript>
+    <div class="report-wrapper">
+      <div class="card-box empty-state">
+        <i class="fas fa-exclamation-triangle empty-icon text-danger"></i>
+        <h3>JavaScript Tidak Aktif</h3>
+        <p>Aktifkan JavaScript pada peramban Anda untuk menampilkan laporan hasil ujian dan pembahasan.</p>
+      </div>
+    </div>
+  </noscript>
+
+  <!-- Library Chart.js & Plugin DataLabels -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+  <!-- Script Internal Modul Report -->
+  <script src="chart.js"></script>
+  <script src="report.js"></script>
+</body>
+</html>

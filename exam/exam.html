@@ -28,12 +28,23 @@
         </div>
       </div>
 
+      <!-- TIMER & REALTIME THRESHOLD WIDGET CENTER -->
       <div class="header-center">
+        <!-- Timer Box (Global / Per-Subtest) -->
         <div class="timer-card" id="timer-box">
           <span class="timer-icon">⏳</span>
           <div class="timer-content">
-            <span class="timer-label">SISA WAKTU</span>
+            <span id="timer-label" class="timer-label">SISA WAKTU</span>
             <span id="timer-display" class="timer-value">00:00:00</span>
+          </div>
+        </div>
+
+        <!-- 2. Target Counter Widget (Jika enable_realtime_threshold_counter: true) -->
+        <div id="realtime-threshold-widget" class="threshold-widget hidden">
+          <span class="thresh-icon">🎯</span>
+          <div class="thresh-content">
+            <span class="thresh-title">TARGET PASSING GRADE</span>
+            <span id="thresh-status-text" class="thresh-val">Butuh <strong id="thresh-needed-count">0</strong> Jawaban Benar Lagi</span>
           </div>
         </div>
       </div>
@@ -48,6 +59,16 @@
         </div>
       </div>
     </header>
+
+    <!-- 1. SUBTEST TAB NAVIGATOR BAR (Muncul jika Ujian Memiliki Beberapa Subtest/Section) -->
+    <nav id="subtest-nav-bar" class="subtest-bar hidden">
+      <div class="subtest-tabs-scroll" id="subtest-tabs-container">
+        <!-- Render Subtest Tabs via JS -->
+      </div>
+      <button id="btn-submit-subtest" class="btn-subtest-action hidden" onclick="bukaModalSubtestSubmit()">
+        🔒 Akhiri Subtest
+      </button>
+    </nav>
 
     <!-- EXAM BODY LAYOUT -->
     <main class="exam-body">
@@ -88,6 +109,27 @@
           <div id="options-box" class="options-container">
             <!-- Dynamic Renderer Tipe Soal 1A s/d 5A -->
           </div>
+
+          <!-- 4. ADAPTIVE HINTS, INSTANT FEEDBACK & EXPLANATION BOX (Drilling / Diagnostic Rules) -->
+          <div id="drill-feedback-container" class="drill-box hidden">
+            <!-- Instant Feedback (show_instant_feedback) -->
+            <div id="instant-feedback-card" class="feedback-card hidden"></div>
+
+            <!-- Adaptive Hints (enable_adaptive_hints) -->
+            <div id="adaptive-hint-card" class="hint-card hidden">
+              <button id="btn-show-hint" class="btn-hint-trigger" onclick="toggleHintText()">
+                💡 Butuh Petunjuk / Clue Pengerjaan?
+              </button>
+              <div id="hint-text-content" class="hint-body hidden"></div>
+            </div>
+
+            <!-- Explanation / Pembahasan Direct (allow_view_explanation_during_exam) -->
+            <div id="explanation-card" class="explanation-card hidden">
+              <div class="expl-header">📖 PEMBAHASAN LENGKAP:</div>
+              <div id="explanation-text-content" class="expl-body"></div>
+            </div>
+          </div>
+
         </div>
 
         <!-- BOTTOM NAVIGATION & ACTION TOOLBAR -->
@@ -149,7 +191,32 @@
 
   </div>
 
-  <!-- MODAL KONFIRMASI SELESAI UJIAN (GLASSMORPISM) -->
+  <!-- MODAL KONFIRMASI SUBTEST SUBMIT -->
+  <div id="modal-subtest-confirm" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-icon">🔒</div>
+      <h3>Konfirmasi Akhiri Subtest</h3>
+      <p id="subtest-confirm-desc" class="modal-desc">Selesaikan pengerjaan subtest ini?</p>
+
+      <div class="summary-box">
+        <div class="sum-item">
+          <span>Belum Dijawab di Subtest Ini:</span>
+          <strong id="subtest-sum-kosong" class="text-danger">0</strong>
+        </div>
+      </div>
+
+      <div id="subtest-lock-notice" class="warning-alert hidden">
+        ⚠️ Perhatian: Sesuai aturan, Anda tidak dapat kembali ke subtest ini jika sudah diakhiri!
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" onclick="tutupModalSubtestSubmit()">Batal</button>
+        <button id="btn-confirm-next-subtest" class="btn-modal-confirm" onclick="eksekusiPindahSubtest()">Ya, Pindah Subtest</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL KONFIRMASI SELESAI UJIAN GLOBAL -->
   <div id="modal-confirm" class="modal-overlay hidden">
     <div class="modal-card">
       <div class="modal-icon">📋</div>

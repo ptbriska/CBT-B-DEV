@@ -1,25 +1,21 @@
 /**
  * ==============================================================================
- * cbt-engine.js - EXAM UI & STATE CONTROLLER (V3 ISOLATED - FIXED LATEX & EXIT)
- * Menangani 8 Tipe Soal, Navigasi, Timer, Persistence, Analytics, & Exit Session
+ * cbt-engine.js - EXAM UI & STATE CONTROLLER (FIXED LATEX MATHJAX RENDER)
  * ==============================================================================
  */
 
 const CBTEngine = (function () {
-  // --------------------------------------------------------------------------
-  // 1. STATE MANAGEMENT (Tersimpan aman di sessionStorage)
-  // --------------------------------------------------------------------------
   let Config = null;
   let UserData = null;
   
   let State = {
     currentIndex: 0,
     currentSubtestId: null,
-    answers: {},       // Format: { "question_id": "jawaban" }
-    doubt: {},         // Format: { "question_id": true/false }
-    timeLogs: {},      // Format: { "question_id": detik (number) }
-    questionOrder: [], // Urutan indeks soal (untuk pengacakan)
-    optionsMap: {},    // Mapping pengacakan opsi per soal
+    answers: {},
+    doubt: {},
+    timeLogs: {},
+    questionOrder: [],
+    optionsMap: {},
     startTimestamp: 0,
     elapsedSeconds: 0,
     attemptId: 'ATT-' + Date.now().toString(36).toUpperCase()
@@ -28,23 +24,19 @@ const CBTEngine = (function () {
   let timerInterval = null;
 
   /**
-   * HELPER: Memperbaiki Spasi Karakter LaTeX agar tidak menempel langsung
-   * dengan kata/kalimat di sekitarnya saat di-render oleh MathJax.
+   * Helper Pembersih Teks LaTeX
+   * Menjamin garis miring ganda (\\) diubah menjadi (\) jika datang dari JSON mentah
+   * TANPA merusak atau menambah spasi liar di dalam tanda $...$
    */
-  function fixLatexSpacing(str) {
+  function formatLatexText(str) {
     if (!str || typeof str !== 'string') return '';
-    return str
-      .replace(/([a-zA-Z0-9\u00C0-\u024F])\$/g, '$1 $') // Tambah spasi sebelum$
-      .replace(/\$([a-zA-Z0-9\u00C0-\u024F])/g, '$ $1'); // Tambah spasi setelah $
+    // Pastikan tidak ada double escape berlebih dari parsing JSON
+    return str.replace(/\\\\/g, '\\');
   }
 
-  // --------------------------------------------------------------------------
-  // 2. INISIALISASI ENGINE
-  // --------------------------------------------------------------------------
   async function init() {
     console.log("[CBT-ENGINE] Memulai inisialisasi...");
     
-    // Validasi Sesi Autentikasi
     const rawUser = sessionStorage.getItem('cbt_auth_user');
     if (!rawUser) {
       alert("Akses ditolak! Sesi tidak ditemukan. Silakan login kembali.");
@@ -53,7 +45,6 @@ const CBTEngine = (function () {
     }
     UserData = JSON.parse(rawUser);
 
-    // Ambil Data JSON Soal
     try {
       const response = await fetch(`../database-soal/${UserData.kodeKegiatan}.json`);
       if (!response.ok) throw new Error("Gagal memuat konfigurasi soal.");
@@ -64,7 +55,6 @@ const CBTEngine = (function () {
       return;
     }
 
-    // Load atau Buat State Baru (Persistence)
     const savedState = sessionStorage.getItem(`cbt_state_${UserData.kodeKegiatan}`);
     if (savedState) {
       State = JSON.parse(savedState);
@@ -72,13 +62,11 @@ const CBTEngine = (function () {
       setupInitialState();
     }
 
-    // Render UI Awal
     renderHeader();
     renderSubtestTabs();
     renderGrid();
     loadQuestion(State.currentIndex);
 
-    // Mulai Timer & Analytics Tracking
     startTimer();
   }
 
@@ -89,7 +77,6 @@ const CBTEngine = (function () {
     let questions = Config.questions || [];
     let initialOrder = questions.map((_, index) => index);
 
-    // Implementasi Pengacakan Soal (Jika diaktifkan)
     if (Config.exam_rules?.randomize_questions) {
       for (let i = initialOrder.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -98,7 +85,6 @@ const CBTEngine = (function () {
     }
     State.questionOrder = initialOrder;
 
-    // Inisialisasi Analytics Timing & Options Shuffling
     questions.forEach((q) => {
       State.timeLogs[q.question_id] = 0;
       
@@ -119,9 +105,6 @@ const CBTEngine = (function () {
     sessionStorage.setItem(`cbt_state_${UserData.kodeKegiatan}`, JSON.stringify(State));
   }
 
-  // --------------------------------------------------------------------------
-  // 3. UI RENDERERS (Header, Tabs, Grid, Questions)
-  // --------------------------------------------------------------------------
   function renderHeader() {
     document.getElementById('disp-exam-title').textContent = Config.nama_kegiatan || "Ujian CBT";
     document.getElementById('disp-sub-title').textContent = Config.penyelenggara || "Briska Education";
@@ -204,17 +187,15 @@ const CBTEngine = (function () {
   }
 
   // --------------------------------------------------------------------------
-  // 4. MULTI-TYPE QUESTION RENDERER (Inti Engine)
+  // 4. LOAD QUESTION & MATHJAX TRIGGER
   // --------------------------------------------------------------------------
   function loadQuestion(displayIndex) {
     const realIndex = State.questionOrder[displayIndex];
     const q = Config.questions[realIndex];
     const qId = q.question_id;
     
-    // Update Header Soal
     document.getElementById('q-num').textContent = displayIndex + 1;
     
-    // Metadata Badges (Learning Analytics Awareness)
     const badgesHtml = `
       ${q.section_name ? `<span class="badge-tag badge-section">📘 ${q.section_name}</span>` : ''}
       ${q.subtest_name ? `<span class="badge-tag badge-subtest">📌 ${q.subtest_name}</span>` : ''}
@@ -223,8 +204,8 @@ const CBTEngine = (function () {
     `;
     document.getElementById('q-badges-container').innerHTML = badgesHtml;
 
-    // Teks Soal Diberikan Sanitasi Spasi LaTeX
-    document.getElementById('q-text').innerHTML = fixLatexSpacing(q.soal);
+    // Render Teks Soal murni tanpa manipulasi regex perusak
+    document.getElementById('q-text').innerHTML = formatLatexText(q.soal);
 
     const imgBox = document.getElementById('q-image-container');
     if (q.gambar && q.gambar !== "") {
@@ -240,7 +221,6 @@ const CBTEngine = (function () {
     const currentAns = State.answers[qId];
 
     if (["1A", "1B", "1C", "5A"].includes(tipe)) {
-      // Single Choice (Radio)
       let optOrder = State.optionsMap[qId] || q.options.map(o => o.key);
       optOrder.forEach(key => {
         const optData = q.options.find(o => o.key === key);
@@ -252,14 +232,13 @@ const CBTEngine = (function () {
         row.innerHTML = `
           <input type="radio" style="pointer-events:none;" ${isSelected ? 'checked' : ''}>
           <span class="opt-key">${key}.</span>
-          <span class="opt-val">${fixLatexSpacing(optData.text)}</span>
+          <span class="opt-val">${formatLatexText(optData.text)}</span>
         `;
         row.onclick = () => saveAnswer(qId, key);
         optBox.appendChild(row);
       });
     } 
     else if (tipe === "2A") {
-      // Multiple Choice (Checkbox)
       let optOrder = State.optionsMap[qId] || q.options.map(o => o.key);
       let ansArr = Array.isArray(currentAns) ? currentAns : [];
       
@@ -272,7 +251,7 @@ const CBTEngine = (function () {
         row.innerHTML = `
           <input type="checkbox" style="pointer-events:none;" ${isSelected ? 'checked' : ''}>
           <span class="opt-key">${key}.</span>
-          <span class="opt-val">${fixLatexSpacing(optData.text)}</span>
+          <span class="opt-val">${formatLatexText(optData.text)}</span>
         `;
         row.onclick = () => {
           let updated = [...ansArr];
@@ -284,7 +263,6 @@ const CBTEngine = (function () {
       });
     }
     else if (tipe === "3A" || tipe === "3B") {
-      // Short Answer (Input Text/Number)
       const isMulti = tipe === "3B";
       optBox.innerHTML = `
         <div class="essay-container">
@@ -300,7 +278,6 @@ const CBTEngine = (function () {
       };
     }
     else if (tipe === "4A") {
-      // Matriks (True/False per baris)
       let ansArr = Array.isArray(currentAns) ? currentAns : [];
       let tableHtml = `<div class="matrix-container"><table class="matrix-table">
         <thead><tr><th style="text-align:left;">Pernyataan</th><th>Benar (B)</th><th>Salah (S)</th></tr></thead><tbody>`;
@@ -309,7 +286,7 @@ const CBTEngine = (function () {
         const choice = ansArr[idx] || "";
         tableHtml += `
           <tr>
-            <td>${idx+1}. ${fixLatexSpacing(opt.text)}</td>
+            <td>${idx+1}. ${formatLatexText(opt.text)}</td>
             <td class="matrix-radio-cell"><input type="radio" name="mtx_${qId}_${idx}" value="B" ${choice === 'B' ? 'checked' : ''} onchange="window.CBTEngine.saveMatrix('${qId}', ${idx}, 'B', ${q.options.length})"></td>
             <td class="matrix-radio-cell"><input type="radio" name="mtx_${qId}_${idx}" value="S" ${choice === 'S' ? 'checked' : ''} onchange="window.CBTEngine.saveMatrix('${qId}', ${idx}, 'S', ${q.options.length})"></td>
           </tr>
@@ -319,27 +296,26 @@ const CBTEngine = (function () {
       optBox.innerHTML = tableHtml;
     }
 
-    // Update Toolbar Bawah
+    // Update Navigasi
     document.getElementById('chk-doubt').checked = !!State.doubt[qId];
     document.getElementById('btn-prev').disabled = (displayIndex === 0);
     document.getElementById('btn-next').disabled = (displayIndex === State.questionOrder.length - 1);
 
-    // Refresh Status Grid Visual
     document.querySelectorAll('.circle-btn').forEach((el, i) => {
       const iterQId = Config.questions[State.questionOrder[i]].question_id;
       el.className = getGridClass(i, iterQId);
     });
 
-    // Panggil Re-render MathJax secara Paksa untuk Teks & Opsi
+    // PANGGIL MATHJAX TYPESETPROMISE SECARA EKSPLISIT
     if (window.MathJax && window.MathJax.typesetPromise) {
-      window.MathJax.typesetPromise([document.getElementById('q-text'), document.getElementById('options-box')])
-        .catch(err => console.warn("MathJax Typeset Error:", err));
+      window.MathJax.typesetClear(); // Clear cache typeset sebelumnya
+      window.MathJax.typesetPromise([
+        document.getElementById('q-text'), 
+        document.getElementById('options-box')
+      ]).catch(err => console.warn("MathJax Typeset Error:", err));
     }
   }
 
-  // --------------------------------------------------------------------------
-  // 5. INPUT HANDLERS & DATA BINDING
-  // --------------------------------------------------------------------------
   function saveAnswer(qId, value) {
     if (value === null) delete State.answers[qId];
     else State.answers[qId] = value;
@@ -395,9 +371,6 @@ const CBTEngine = (function () {
     });
   }
 
-  // --------------------------------------------------------------------------
-  // 6. TIMING ENGINE (Real-time tracking per Question)
-  // --------------------------------------------------------------------------
   function startTimer() {
     const durasiTotalSec = (Config.total_timer_menit || 120) * 60;
     
@@ -435,9 +408,6 @@ const CBTEngine = (function () {
     else timerEl?.classList.remove('timer-warning');
   }
 
-  // --------------------------------------------------------------------------
-  // 7. EXIT HANDLER (Batal / Keluar Tanpa Submit)
-  // --------------------------------------------------------------------------
   function openExitModal() {
     document.getElementById('modal-exit')?.classList.remove('hidden');
   }
@@ -449,18 +419,13 @@ const CBTEngine = (function () {
   function executeExitWithoutSubmit() {
     if (timerInterval) clearInterval(timerInterval);
     
-    // Hapus State Ujian Lokal
     sessionStorage.removeItem(`cbt_state_${UserData.kodeKegiatan}`);
     sessionStorage.removeItem('cbt_security_warning_count');
     sessionStorage.removeItem('cbt_security_logs');
     
-    // Redirect Kembali ke Halaman Petunjuk / Guide
     window.location.replace('../guide/guidetest.html');
   }
 
-  // --------------------------------------------------------------------------
-  // 8. SUBMISSION HANDLER (Decoupled Handoff)
-  // --------------------------------------------------------------------------
   function openConfirmModal() {
     const stats = updateGridStats();
     document.getElementById('sum-total').textContent = stats.total;
@@ -507,7 +472,6 @@ const CBTEngine = (function () {
     }
   }
 
-  // Expose API ke Window (Untuk UI HTML Event Listeners)
   return {
     init,
     saveMatrix,
@@ -525,7 +489,6 @@ const CBTEngine = (function () {
 
 })();
 
-// Jalankan Engine saat DOM siap
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('cbt-exam-root')) {
     window.CBTEngine = CBTEngine;
@@ -533,7 +496,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Alias Global untuk HTML event
 window.clearAnswer = () => window.CBTEngine.clearAnswer();
 window.toggleDoubt = () => window.CBTEngine.toggleDoubt();
 window.navigasi = (arah) => window.CBTEngine.navigasi(arah);

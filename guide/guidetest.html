@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Petunjuk & Lobby Ujian - CBT System</title>
+  <link rel="stylesheet" href="guide.css">
+</head>
+<body>
+
+  <main class="guide-container">
+    
+    <!-- Branding Header -->
+    <header class="guide-header">
+      <div class="logo-box">
+        <img id="cbt-logo" src="https://lh3.googleusercontent.com/d/1TYEl9QOZV3EU5p3peLGaaUZcjrOISSSz" alt="Logo Lembaga">
+      </div>
+      <h1 id="cbt-sys-name" class="sys-title">CBT/CAT/UTBK Versi 3</h1>
+      <p id="cbt-sub-institution" class="sys-subtitle">Briska Education Corporation</p>
+    </header>
+
+    <!-- Card 1: Identitas Peserta (Dynamic Role Accent Color) -->
+    <section id="user-profile-card" class="guide-card card-role">
+      <div class="card-header-flex">
+        <h3>👤 IDENTITAS PESERTA UJIAN</h3>
+        <span id="role-badge" class="role-badge">REGULER</span>
+      </div>
+      <div class="user-grid">
+        <div class="user-item">
+          <span class="label">Nama Lengkap</span>
+          <span id="user-nama" class="val-highlight">-</span>
+        </div>
+        <div class="user-item">
+          <span class="label">Username / NIM / NIK</span>
+          <span id="user-username" class="val">-</span>
+        </div>
+        <div class="user-item">
+          <span class="label">Asal Instansi</span>
+          <span id="user-instansi" class="val">-</span>
+        </div>
+        <div class="user-item">
+          <span class="label">Email / WA</span>
+          <span id="user-kontak" class="val">-</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Card 2: Informasi Ujian CBT (Tepat 7 Field Utama) -->
+    <section class="guide-card">
+      <h3>📋 INFORMASI UJIAN CBT</h3>
+      <div class="info-list">
+        <div class="info-row">
+          <span class="info-label">Kode Paket Ujian</span>
+          <span class="info-sep">:</span>
+          <span id="info-kode-paket" class="info-val badge-code">GEODATIS-SEP26 (LATIHAN)</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Nama Kegiatan Ujian</span>
+          <span class="info-sep">:</span>
+          <span id="info-nama-kegiatan" class="info-val">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Sistem Ujian</span>
+          <span class="info-sep">:</span>
+          <span id="info-sistem-ujian" class="info-val">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Mode Ujian</span>
+          <span class="info-sep">:</span>
+          <span id="info-mode-ujian" class="info-val">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Penyelenggara</span>
+          <span class="info-sep">:</span>
+          <span id="info-penyelenggara" class="info-val">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Lembaga</span>
+          <span class="info-sep">:</span>
+          <span id="info-lembaga" class="info-val">-</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Total Durasi Pengerjaan</span>
+          <span class="info-sep">:</span>
+          <span id="info-durasi" class="info-val">-</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Card 3: Ketentuan & Tata Tertib Pelaksanaan CBT -->
+    <section class="guide-card">
+      <h3 class="rules-title">⚠️ KETENTUAN & TATA TERTIB PELAKSANAAN CBT</h3>
+      <ol class="rules-list">
+        <li><strong>Koneksi Internet:</strong> Pastikan perangkat Anda terhubung dengan koneksi internet yang stabil selama ujian berlangsung.</li>
+        <li><strong>Pengerjaan Soal:</strong> Bacalah setiap soal dengan teliti. Anda bebas berpindah nomor soal menggunakan tombol navigasi atau panel nomor di sisi kanan.</li>
+        <li><strong>Waktu Ujian:</strong> Timer countdown akan berjalan otomatis begitu Anda menekan tombol "Mulai Pengerjaan Ujian". Jawaban tersimpan otomatis jika waktu habis.</li>
+        <li class="warning-box">
+          <strong class="warn-head">SISTEM KEAMANAN ANTI-KECURANGAN (PENTING):</strong>
+          <ul>
+            <li>Dilarang membuka tab baru, berpindah aplikasi, split screen, atau meminimalkan (minimize) jendela browser saat ujian aktif.</li>
+            <li>Sistem mencatat setiap aktivitas keluar dari layar ujian secara otomatis.</li>
+            <li>Jika terdeteksi 3 KALI keluar dari layar ujian, sistem akan <strong>MENGUNCI UJIAN DAN MELAKUKAN SUBMIT OTOMATIS</strong> atas jawaban yang telah tersimpan.</li>
+          </ul>
+        </li>
+        <li><strong>Integritas:</strong> Dilarang keras bekerjasama, menggunakan alat bantu yang tidak diizinkan, atau diwakilkan oleh orang lain.</li>
+      </ol>
+    </section>
+
+    <!-- Checkbox Agreement & Action Button -->
+    <section class="action-section">
+      <label class="checkbox-container">
+        <input type="checkbox" id="check-agree">
+        <span class="checkmark"></span>
+        <span class="agree-text">Saya telah membaca, memahami, dan bersedia tunduk pada seluruh ketentuan pelaksanaan ujian di atas.</span>
+      </label>
+
+      <button id="btn-start-exam" class="btn-start" disabled>
+        🚀 MULAI PENGERJAAN UJIAN
+      </button>
+    </section>
+
+    <!-- Link Khusus Ke Halaman Panduan Penilaian & Tipe Soal -->
+    <div class="panduan-footer-link">
+      <a href="panduan-penilaian.html" target="_blank" class="link-panduan">
+        📖 Lihat Panduan Penilaian & Tipe Soal
+      </a>
+    </div>
+
+    <!-- Modul Health Status Footer -->
+    <footer class="guide-footer">
+      <span id="guide-health-status">Checking Guide Module...</span>
+    </footer>
+
+  </main>
+
+  <script src="guide.js"></script>
+</body>
+</html>

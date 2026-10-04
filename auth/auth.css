@@ -6,24 +6,46 @@
 }
 
 body {
-  background-color: #0b0f19;
+  /* Background Gradien Biru Cyan Cerah ke Dark Slate */
+  background: radial-gradient(circle at 50% 20%, #0284c7 0%, #0f172a 60%, #030712 100%);
   color: #e2e8f0;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
+  position: relative;
+  overflow-x: hidden;
 }
 
+/* Background Ambient Glow Effect */
+body::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, rgba(0, 0, 0, 0) 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Auth Container Glassmorphism Plus Neon Glow */
 .auth-container {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 820px;
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(56, 189, 248, 0.2);
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 20px;
+  padding: 2.2rem;
+  box-shadow: 0 0 35px rgba(56, 189, 248, 0.25),
+              0 25px 50px rgba(0, 0, 0, 0.6);
 }
 
 .auth-header {
@@ -32,31 +54,80 @@ body {
 }
 
 .institution-tag {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 800;
   color: #38bdf8;
-  letter-spacing: 1.5px;
-  margin-bottom: 6px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
 }
 
 .auth-header h2 {
-  font-size: 1.6rem;
+  font-size: 1.75rem;
+  font-weight: 800;
   color: #f8fafc;
   margin-bottom: 6px;
+  letter-spacing: -0.5px;
 }
 
 .auth-header p {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   color: #94a3b8;
 }
 
-/* Verification Form */
+/* Form Verification Container */
 .verify-box {
-  background: rgba(30, 41, 59, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 1.2rem;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 14px;
+  padding: 1.4rem;
   margin-bottom: 1.5rem;
+  box-shadow: inset 0 0 15px rgba(56, 189, 248, 0.05);
+}
+
+.special-pass-group label {
+  color: #fbbf24 !important;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+}
+
+.special-pass-group input {
+  border-color: rgba(251, 191, 36, 0.5) !important;
+  background: rgba(251, 191, 36, 0.08) !important;
+}
+
+.special-pass-group input:focus {
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.5) !important;
+}
+
+.divider-or {
+  text-align: center;
+  margin: 14px 0;
+  position: relative;
+}
+
+.divider-or::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(56, 189, 248, 0.2);
+  z-index: 1;
+}
+
+.divider-or span {
+  position: relative;
+  z-index: 2;
+  background: #0f172a;
+  padding: 4px 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 12px;
+  letter-spacing: 0.8px;
 }
 
 .input-grid {
@@ -78,62 +149,67 @@ body {
 }
 
 .input-group label {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #cbd5e1;
   margin-bottom: 6px;
 }
 
 .input-group input {
-  padding: 10px 14px;
-  background: #0f172a;
-  border: 1px solid #334155;
-  border-radius: 8px;
+  padding: 11px 15px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 10px;
   color: #ffffff;
   font-size: 0.95rem;
   outline: none;
-  transition: border 0.3s;
+  transition: all 0.3s ease;
 }
 
 .input-group input:focus {
   border-color: #38bdf8;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
 }
 
-/* Orange Check Button */
+/* Check Button Cyan Neon Gradient */
 .btn-check {
   width: 100%;
-  padding: 12px;
-  background: #d97706;
+  padding: 13px;
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
   color: #ffffff;
   font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: 0.5px;
+  font-size: 0.98rem;
+  letter-spacing: 0.8px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-  margin-top: 6px;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+  box-shadow: 0 0 15px rgba(2, 132, 199, 0.4);
 }
 
 .btn-check:hover {
-  background: #b45309;
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 0 22px rgba(56, 189, 248, 0.7);
 }
 
 /* Dynamic Notification Cards */
 .notif-card {
   padding: 1.2rem;
-  border-radius: 10px;
+  border-radius: 12px;
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
   line-height: 1.5;
   text-align: center;
+  backdrop-filter: blur(10px);
 }
 
 .notif-card.error {
-  background: #450a0a;
+  background: rgba(127, 29, 29, 0.6);
   border: 1px solid #f87171;
   color: #fca5a5;
+  box-shadow: 0 0 15px rgba(248, 113, 113, 0.25);
 }
 
 .notif-card.error strong {
@@ -141,9 +217,17 @@ body {
 }
 
 .notif-card.success {
-  background: #064e3b;
+  background: rgba(6, 78, 59, 0.6);
   border: 1px solid #34d399;
   color: #a7f3d0;
+  box-shadow: 0 0 15px rgba(52, 211, 153, 0.25);
+}
+
+.notif-card.fastpass {
+  background: rgba(120, 53, 15, 0.6);
+  border: 1px solid #f59e0b;
+  color: #fde68a;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
 }
 
 .btn-wa-admin {
@@ -156,24 +240,26 @@ body {
   color: #ffffff;
   font-weight: 700;
   text-decoration: none;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(37, 211, 102, 0.4);
+  transition: transform 0.2s;
 }
 
 .btn-wa-admin:hover {
   background: #1da851;
+  transform: scale(1.03);
 }
 
 /* Autofill Grid Section */
 .autofill-section {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 1.2rem;
+  border-top: 1px solid rgba(56, 189, 248, 0.2);
+  padding-top: 1.4rem;
 }
 
 .section-title {
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: #f1f5f9;
-  margin-bottom: 1rem;
+  margin-bottom: 1.1rem;
 }
 
 .autofill-grid {
@@ -194,27 +280,44 @@ body {
 }
 
 .info-group label {
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   color: #94a3b8;
   margin-bottom: 4px;
 }
 
 .field-autofill {
-  padding: 9px 12px;
+  padding: 10px 12px;
   background: rgba(15, 23, 42, 0.6);
-  border: 1px solid #1e293b;
-  border-radius: 6px;
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  border-radius: 8px;
   color: #e2e8f0;
   font-size: 0.88rem;
   outline: none;
+  transition: all 0.3s ease;
 }
 
-/* Status Green Highlight when Verified */
+.field-autofill:not([readonly]) {
+  background: rgba(15, 23, 42, 0.9) !important;
+  border-color: #f59e0b !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.25);
+}
+
+/* Status Badges with Neon Accent */
 .field-autofill.verified-badge {
   color: #34d399;
   font-weight: 700;
   border-color: #059669;
-  background: rgba(6, 78, 59, 0.2);
+  background: rgba(6, 78, 59, 0.3);
+  box-shadow: 0 0 10px rgba(52, 211, 153, 0.2);
+}
+
+.field-autofill.fastpass-badge {
+  color: #fbbf24;
+  font-weight: 700;
+  border-color: #d97706;
+  background: rgba(180, 83, 9, 0.3);
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.25);
 }
 
 /* Next Action Box */
@@ -227,19 +330,20 @@ body {
   display: inline-block;
   width: 100%;
   padding: 14px;
-  background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+  background: linear-gradient(135deg, #0d9488 0%, #0284c7 100%);
   color: #ffffff;
   font-weight: 700;
   font-size: 1rem;
+  letter-spacing: 0.5px;
   text-decoration: none;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
-  transition: all 0.3s;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+  transition: all 0.3s ease;
 }
 
 .btn-next:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.6);
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.7);
 }
 
 .hidden {
@@ -247,7 +351,7 @@ body {
 }
 
 .auth-footer {
-  margin-top: 1.5rem;
+  margin-top: 1.6rem;
   font-size: 0.75rem;
   font-family: monospace;
   color: #64748b;

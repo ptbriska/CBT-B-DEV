@@ -245,9 +245,9 @@ const ScoringEngine = (function () {
     };
 
     // --------------------------------------------------------------------------
-    // 3. PENGIRIMAN DATA & REDIRECT KE REPORT
+    // 3. PENGIRIMAN DATA & REDIRECT KE RESULT PREVIEW
     // --------------------------------------------------------------------------
-    // Simpan ke SessionStorage agar bisa dibaca langsung oleh halaman Report.html
+    // Simpan ke SessionStorage agar bisa dibaca langsung oleh halaman result.html
     const FinalReportData = {
       ...HasilUjian,
       rincian_jawaban: responsesAnalytics,
@@ -255,7 +255,7 @@ const ScoringEngine = (function () {
     };
     sessionStorage.setItem(`cbt_last_result_${config.kode_ujian}`, JSON.stringify(FinalReportData));
     
-    // Hapus State Jawaban agar tidak tersangkut di memory (Clean Slate)
+    // Hapus State Jawaban Ujian agar tidak tersangkut di memory (Clean Slate)
     sessionStorage.removeItem(`cbt_state_${config.kode_ujian}`);
 
     // Transmisi ke Webhook (Asinkron / Latar Belakang)
@@ -274,9 +274,9 @@ const ScoringEngine = (function () {
       }
     }
 
-    // Eksekusi Pindah Halaman ke Rapor (Tanpa Manipulasi DOM)
-    console.log("[SCORING-ENGINE] Kalkulasi selesai. Redirecting ke Rapor...");
-    window.location.replace("../report/report.html");
+    // Eksekusi Pindah Halaman ke Result Preview (Ringkasan Skor & Teaser 3 Soal)
+    console.log("[SCORING-ENGINE] Kalkulasi selesai. Redirecting ke Result Preview...");
+    window.location.replace("../result/result.html");
   }
 
   // Expose API

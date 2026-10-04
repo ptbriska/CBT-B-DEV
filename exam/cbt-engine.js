@@ -1,7 +1,7 @@
 /**
  * ==============================================================================
- * cbt-engine.js - EXAM UI & STATE CONTROLLER (V3 ISOLATED)
- * Menangani 8 Tipe Soal, Navigasi, Timer, State Persistence, & Analytics Data
+ * cbt-engine.js - EXAM UI & STATE CONTROLLER (V3 ISOLATED - FIXED LATEX & EXIT)
+ * Menangani 8 Tipe Soal, Navigasi, Timer, Persistence, Analytics, & Exit Session
  * ==============================================================================
  */
 
@@ -26,6 +26,17 @@ const CBTEngine = (function () {
   };
 
   let timerInterval = null;
+
+  /**
+   * HELPER: Memperbaiki Spasi Karakter LaTeX agar tidak menempel langsung
+   * dengan kata/kalimat di sekitarnya saat di-render oleh MathJax.
+   */
+  function fixLatexSpacing(str) {
+    if (!str || typeof str !== 'string') return '';
+    return str
+      .replace(/([a-zA-Z0-9\u00C0-\u024F])\$/g, '$1 $') // Tambah spasi sebelum$
+      .replace(/\$([a-zA-Z0-9\u00C0-\u024F])/g, '$ $1'); // Tambah spasi setelah $
+  }
 
   // --------------------------------------------------------------------------
   // 2. INISIALISASI ENGINE
@@ -80,7 +91,6 @@ const CBTEngine = (function () {
 
     // Implementasi Pengacakan Soal (Jika diaktifkan)
     if (Config.exam_rules?.randomize_questions) {
-      // Logic shuffle sederhana (Fisher-Yates)
       for (let i = initialOrder.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [initialOrder[i], initialOrder[j]] = [initialOrder[j], initialOrder[i]];
@@ -89,10 +99,9 @@ const CBTEngine = (function () {
     State.questionOrder = initialOrder;
 
     // Inisialisasi Analytics Timing & Options Shuffling
-    questions.forEach((q, idx) => {
+    questions.forEach((q) => {
       State.timeLogs[q.question_id] = 0;
       
-      // Jika opsi perlu diacak (Tipe 1A-1C, 2A, 5A)
       if (Config.exam_rules?.randomize_options && q.options && q.options.length > 0) {
         let optKeys = q.options.map(o => o.key);
         for (let i = optKeys.length - 1; i > 0; i--) {
@@ -214,8 +223,9 @@ const CBTEngine = (function () {
     `;
     document.getElementById('q-badges-container').innerHTML = badgesHtml;
 
-    // Konten Soal & Gambar
-    document.getElementById('q-text').innerHTML = q.soal;
+    // Teks Soal Diberikan Sanitasi Spasi LaTeX
+    document.getElementById('q-text').innerHTML = fixLatexSpacing(q.soal);
+
     const imgBox = document.getElementById('q-image-container');
     if (q.gambar && q.gambar !== "") {
       imgBox.innerHTML = `<img src="${q.gambar}" class="img-soal" alt="Gambar Pendukung">`;
@@ -223,7 +233,7 @@ const CBTEngine = (function () {
       imgBox.innerHTML = '';
     }
 
-    // Render Opsi Berdasarkan Tipe
+    // Render Opsi Berdasarkan Tipe Soal
     const optBox = document.getElementById('options-box');
     optBox.innerHTML = '';
     const tipe = (q.tipe || "1A").toUpperCase();
@@ -242,7 +252,7 @@ const CBTEngine = (function () {
         row.innerHTML = `
           <input type="radio" style="pointer-events:none;" ${isSelected ? 'checked' : ''}>
           <span class="opt-key">${key}.</span>
-          <span class="opt-val">${optData.text}</span>
+          <span class="opt-val">${fixLatexSpacing(optData.text)}</span>
         `;
         row.onclick = () => saveAnswer(qId, key);
         optBox.appendChild(row);
@@ -262,7 +272,7 @@ const CBTEngine = (function () {
         row.innerHTML = `
           <input type="checkbox" style="pointer-events:none;" ${isSelected ? 'checked' : ''}>
           <span class="opt-key">${key}.</span>
-          <span class="opt-val">${optData.text}</span>
+          <span class="opt-val">${fixLatexSpacing(optData.text)}</span>
         `;
         row.onclick = () => {
           let updated = [...ansArr];
@@ -299,7 +309,7 @@ const CBTEngine = (function () {
         const choice = ansArr[idx] || "";
         tableHtml += `
           <tr>
-            <td>${idx+1}. ${opt.text}</td>
+            <td>${idx+1}. ${fixLatexSpacing(opt.text)}</td>
             <td class="matrix-radio-cell"><input type="radio" name="mtx_${qId}_${idx}" value="B" ${choice === 'B' ? 'checked' : ''} onchange="window.CBTEngine.saveMatrix('${qId}', ${idx}, 'B', ${q.options.length})"></td>
             <td class="matrix-radio-cell"><input type="radio" name="mtx_${qId}_${idx}" value="S" ${choice === 'S' ? 'checked' : ''} onchange="window.CBTEngine.saveMatrix('${qId}', ${idx}, 'S', ${q.options.length})"></td>
           </tr>
@@ -309,7 +319,7 @@ const CBTEngine = (function () {
       optBox.innerHTML = tableHtml;
     }
 
-    // Update Toolbar Bawah (Ragu & Navigasi)
+    // Update Toolbar Bawah
     document.getElementById('chk-doubt').checked = !!State.doubt[qId];
     document.getElementById('btn-prev').disabled = (displayIndex === 0);
     document.getElementById('btn-next').disabled = (displayIndex === State.questionOrder.length - 1);
@@ -320,10 +330,10 @@ const CBTEngine = (function () {
       el.className = getGridClass(i, iterQId);
     });
 
-    // Panggil MathJax jika ada rumus
+    // Panggil Re-render MathJax secara Paksa untuk Teks & Opsi
     if (window.MathJax && window.MathJax.typesetPromise) {
       window.MathJax.typesetPromise([document.getElementById('q-text'), document.getElementById('options-box')])
-        .catch(err => console.warn("MathJax Error:", err));
+        .catch(err => console.warn("MathJax Typeset Error:", err));
     }
   }
 
@@ -336,10 +346,10 @@ const CBTEngine = (function () {
     
     saveState();
     if (document.getElementById('input-short')) {
-       updateGridStats(); // Hindari re-render utuh agar cursor tidak hilang saat ngetik essay
+       updateGridStats();
        document.getElementById(`grid-circle-${State.currentIndex}`).className = getGridClass(State.currentIndex, qId);
     } else {
-       loadQuestion(State.currentIndex); // Re-render untuk Radio/Checkbox styling
+       loadQuestion(State.currentIndex);
     }
   }
 
@@ -399,14 +409,11 @@ const CBTEngine = (function () {
       const sisaDetik = Math.max(0, durasiTotalSec - elapsed);
       updateTimerUI(sisaDetik);
 
-      // Track durasi aktif per soal (Analytics Tier 2)
       const activeQId = Config.questions[State.questionOrder[State.currentIndex]].question_id;
       State.timeLogs[activeQId] = (State.timeLogs[activeQId] || 0) + 1;
       
-      // Auto-save interval tiap 5 detik
       if (elapsed % 5 === 0) saveState();
 
-      // Waktu Habis Global
       if (sisaDetik <= 0) {
         clearInterval(timerInterval);
         alert("⏰ Waktu ujian Anda telah habis! Sistem akan mengirim jawaban secara otomatis.");
@@ -422,14 +429,37 @@ const CBTEngine = (function () {
     
     const display = `${String(jam).padStart(2,'0')}:${String(mnt).padStart(2,'0')}:${String(dtk).padStart(2,'0')}`;
     const timerEl = document.getElementById('timer-display');
-    timerEl.textContent = display;
+    if (timerEl) timerEl.textContent = display;
     
-    if (sisaDetik <= 300) timerEl.classList.add('timer-warning'); // Merah kedip < 5 menit
-    else timerEl.classList.remove('timer-warning');
+    if (sisaDetik <= 300) timerEl?.classList.add('timer-warning');
+    else timerEl?.classList.remove('timer-warning');
   }
 
   // --------------------------------------------------------------------------
-  // 7. SUBMISSION HANDLER (Decoupled Handoff)
+  // 7. EXIT HANDLER (Batal / Keluar Tanpa Submit)
+  // --------------------------------------------------------------------------
+  function openExitModal() {
+    document.getElementById('modal-exit')?.classList.remove('hidden');
+  }
+
+  function closeExitModal() {
+    document.getElementById('modal-exit')?.classList.add('hidden');
+  }
+
+  function executeExitWithoutSubmit() {
+    if (timerInterval) clearInterval(timerInterval);
+    
+    // Hapus State Ujian Lokal
+    sessionStorage.removeItem(`cbt_state_${UserData.kodeKegiatan}`);
+    sessionStorage.removeItem('cbt_security_warning_count');
+    sessionStorage.removeItem('cbt_security_logs');
+    
+    // Redirect Kembali ke Halaman Petunjuk / Guide
+    window.location.replace('../guide/guidetest.html');
+  }
+
+  // --------------------------------------------------------------------------
+  // 8. SUBMISSION HANDLER (Decoupled Handoff)
   // --------------------------------------------------------------------------
   function openConfirmModal() {
     const stats = updateGridStats();
@@ -438,24 +468,23 @@ const CBTEngine = (function () {
     document.getElementById('sum-kosong').textContent = stats.total - stats.answeredCount;
     
     if (stats.answeredCount < stats.total) {
-      document.getElementById('sum-warning-text').classList.remove('hidden');
+      document.getElementById('sum-warning-text')?.classList.remove('hidden');
     } else {
-      document.getElementById('sum-warning-text').classList.add('hidden');
+      document.getElementById('sum-warning-text')?.classList.add('hidden');
     }
     
-    document.getElementById('modal-confirm').classList.remove('hidden');
+    document.getElementById('modal-confirm')?.classList.remove('hidden');
   }
 
   function closeConfirmModal() {
-    document.getElementById('modal-confirm').classList.add('hidden');
+    document.getElementById('modal-confirm')?.classList.add('hidden');
   }
 
   function executeSubmit(isAuto = false) {
-    document.getElementById('modal-confirm').classList.add('hidden');
-    document.getElementById('loading-overlay').classList.remove('hidden');
+    document.getElementById('modal-confirm')?.classList.add('hidden');
+    document.getElementById('loading-overlay')?.classList.remove('hidden');
     clearInterval(timerInterval);
 
-    // Kumpulkan Raw Data Analytics untuk dilempar ke ScoringEngine
     const RawDataPayload = {
       student_id: UserData.username,
       attempt_id: State.attemptId,
@@ -470,7 +499,6 @@ const CBTEngine = (function () {
       security_logs: (window.SecurityEngine && window.SecurityEngine.getLogs()) || []
     };
 
-    // HANDOFF: Panggil Scoring Engine Murni (Terpisah di scoring.js)
     if (window.ScoringEngine && typeof window.ScoringEngine.calculateAndTransmit === 'function') {
       window.ScoringEngine.calculateAndTransmit(Config, UserData, RawDataPayload);
     } else {
@@ -487,6 +515,9 @@ const CBTEngine = (function () {
     toggleDoubt,
     navigasi,
     setFontSize,
+    bukaModalKeluar: openExitModal,
+    tutupModalKeluar: closeExitModal,
+    eksekusiKeluarUjian: executeExitWithoutSubmit,
     bukaModalKonfirmasi: openConfirmModal,
     tutupModalKonfirmasi: closeConfirmModal,
     eksekusiSubmitUjian: () => executeSubmit(false)
@@ -507,6 +538,9 @@ window.clearAnswer = () => window.CBTEngine.clearAnswer();
 window.toggleDoubt = () => window.CBTEngine.toggleDoubt();
 window.navigasi = (arah) => window.CBTEngine.navigasi(arah);
 window.setFontSize = (size) => window.CBTEngine.setFontSize(size);
+window.bukaModalKeluar = () => window.CBTEngine.bukaModalKeluar();
+window.tutupModalKeluar = () => window.CBTEngine.tutupModalKeluar();
+window.eksekusiKeluarUjian = () => window.CBTEngine.eksekusiKeluarUjian();
 window.bukaModalKonfirmasi = () => window.CBTEngine.bukaModalKonfirmasi();
 window.tutupModalKonfirmasi = () => window.CBTEngine.tutupModalKonfirmasi();
 window.eksekusiSubmitUjian = () => window.CBTEngine.eksekusiSubmitUjian();

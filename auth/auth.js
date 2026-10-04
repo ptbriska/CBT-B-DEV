@@ -1,5 +1,5 @@
 /**
- * AUTH MODULE HEALTH CHECK & FAST-PASS ENGINE
+ * AUTH MODULE HEALTH CHECK & DUAL-PATHWAY ENGINE
  */
 (function initAuthModule() {
   const healthEl = document.getElementById('auth-health-status');
@@ -10,7 +10,7 @@
     };
     if (healthEl) {
       healthEl.style.color = '#34d399';
-      healthEl.textContent = '● MODULE AUTH: ONLINE [ISOLATED OK]';
+      healthEl.textContent = '● MODULE AUTH: ONLINE [DUAL-PATHWAY OK]';
     }
     console.log('[AUTH-MOD] auth.js loaded successfully.');
   } catch (err) {
@@ -23,112 +23,144 @@
 })();
 
 // DOM Elements
-const btnVerify = document.getElementById('btn-verify');
+const btnFastPass = document.getElementById('btn-fastpass-verify');
+const btnReguler = document.getElementById('btn-reguler-verify');
 const notifBox = document.getElementById('notification-box');
 const nextBox = document.getElementById('next-action-container');
 
 // URL Web App Google Apps Script Resmi Anda
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2MPM2sFzYOggxYdwLHhfglOCCTz4Reu8cYh5IsbxmHj6MYaPBXDYO0jpCYSXyxeI6/exec'; 
 
-btnVerify.addEventListener('click', async () => {
-  const kodeKegiatan = document.getElementById('input-kegiatan').value.trim().toUpperCase();
-  const fastPassInput = document.getElementById('input-fastpass') ? document.getElementById('input-fastpass').value.trim() : '';
-  const username = document.getElementById('input-username').value.trim();
-  const token = document.getElementById('input-token').value.trim();
+// =============================================================================
+// JALUR 1: VERIFIKASI FAST-PASS (VIP / MASTER DEVELOPER)
+// =============================================================================
+if (btnFastPass) {
+  btnFastPass.addEventListener('click', async () => {
+    const kodeKegiatan = document.getElementById('input-kegiatan').value.trim().toUpperCase();
+    const fastPassToken = document.getElementById('input-fastpass').value.trim();
 
-  // Basic Validation: Kode Kegiatan Wajib Diisi
-  if (!kodeKegiatan) {
-    showErrorNotification('N/A', 'N/A', 'Kode Kegiatan (Identitas Sheet / Soal) wajib diisi!');
-    return;
-  }
-
-  btnVerify.disabled = true;
-  btnVerify.textContent = '🔄 MEMERIKSA OTENTIKASI...';
-
-  try {
-    // -------------------------------------------------------------------------
-    // SKENARIO 1: FAST-PASS ACCESS (VIP / MASTER TOKEN BYPASS SPREADSHEET)
-    // -------------------------------------------------------------------------
-    if (fastPassInput !== '') {
-      const jsonUrl = `../database-soal/${kodeKegiatan}.json`;
-      
-      try {
-        const jsonResp = await fetch(jsonUrl);
-        if (jsonResp.ok) {
-          const examConfig = await jsonResp.json();
-          
-          let tokenRole = null;
-          if (fastPassInput === examConfig.token_master) {
-            tokenRole = 'MASTER';
-          } else if (fastPassInput === examConfig.token_vip) {
-            tokenRole = 'VIP';
-          }
-
-          if (tokenRole) {
-            // FAST-PASS MATCHED! BYPASS GAS SPREADSHEET
-            showFastPassNotification(tokenRole, kodeKegiatan);
-            enableManualFormFilling(tokenRole, kodeKegiatan, examConfig);
-            nextBox.classList.remove('hidden');
-            return;
-          }
-        }
-      } catch (e) {
-        console.warn(`[FAST-PASS] Gagal membaca konfigurasi JSON di ${jsonUrl}`, e);
-      }
-    }
-
-    // -------------------------------------------------------------------------
-    // SKENARIO 2: JALUR REGULER (VERIFIKASI KE GOOGLE APPS SPREADSHEET)
-    // -------------------------------------------------------------------------
-    if (!username || !token) {
-      showErrorNotification(username || 'N/A', token || 'N/A', 'Semua kolom input verifikasi reguler wajib diisi!');
+    if (!kodeKegiatan) {
+      showErrorNotification('N/A', 'N/A', 'Kode Kegiatan wajib diisi terlebih dahulu!');
       return;
     }
 
-    let userData = null;
-
-    if (SCRIPT_URL) {
-      const response = await fetch(`${SCRIPT_URL}?sheet=${encodeURIComponent(kodeKegiatan)}&username=${encodeURIComponent(username)}&token=${encodeURIComponent(token)}`);
-      const result = await response.json();
-      if (result.success && result.data) {
-        userData = result.data;
-      }
+    if (!fastPassToken) {
+      showErrorNotification('N/A', 'N/A', 'Token Fast-Pass (VIP / Master) tidak boleh kosong!');
+      return;
     }
 
-    // Pengecekan Kondisi Lolos: Data Ada DAN Status === VERIFIED
-    if (userData && (userData.status === 'VERIFIED' || userData.status.includes('VERIFIED'))) {
-      showSuccessNotification(userData);
-      fillUserDetailForm(userData, false);
-      
-      // Simpan Sesi Terisolasi
-      sessionStorage.setItem('cbt_auth_user', JSON.stringify({
-        username: username,
-        token: token,
-        tokenRole: 'REGULER',
-        ...userData
-      }));
+    btnFastPass.disabled = true;
+    btnFastPass.textContent = '⚡ MEMERIKSA TOKEN FAST-PASS...';
 
-      nextBox.classList.remove('hidden');
-    } else {
-      showErrorNotification(username, token);
+    try {
+      const jsonUrl = `../database-soal/${kodeKegiatan}.json`;
+      const jsonResp = await fetch(jsonUrl);
+
+      if (!jsonResp.ok) {
+        showErrorNotification('N/A', fastPassToken, `File konfigurasi soal '${kodeKegiatan}.json' tidak ditemukan di database-soal/`);
+        clearUserDetailForm();
+        nextBox.classList.add('hidden');
+        return;
+      }
+
+      const examConfig = await jsonResp.json();
+      let tokenRole = null;
+
+      if (fastPassToken === examConfig.token_master) {
+        tokenRole = 'MASTER';
+      } else if (fastPassToken === examConfig.token_vip) {
+        tokenRole = 'VIP';
+      }
+
+      if (tokenRole) {
+        // SUCCESS FAST-PASS: BYPASS GOOGLE SPREADSHEET!
+        showFastPassNotification(tokenRole, kodeKegiatan);
+        enableManualFormFilling(tokenRole, kodeKegiatan, examConfig);
+        nextBox.classList.remove('hidden');
+      } else {
+        showErrorNotification('N/A', fastPassToken, `Token Fast-Pass '${fastPassToken}' tidak valid untuk kegiatan '${kodeKegiatan}'!`);
+        clearUserDetailForm();
+        nextBox.classList.add('hidden');
+      }
+
+    } catch (err) {
+      console.error('[FAST-PASS ERROR]', err);
+      showErrorNotification('N/A', fastPassToken, 'Gagal memproses file konfigurasi JSON soal.');
       clearUserDetailForm();
       nextBox.classList.add('hidden');
+    } finally {
+      btnFastPass.disabled = false;
+      btnFastPass.textContent = '⚡ VERIFIKASI FAST-PASS (VIP / MASTER)';
+    }
+  });
+}
+
+// =============================================================================
+// JALUR 2: VERIFIKASI REGULER (GOOGLE SPREADSHEET)
+// =============================================================================
+if (btnReguler) {
+  btnReguler.addEventListener('click', async () => {
+    const kodeKegiatan = document.getElementById('input-kegiatan').value.trim().toUpperCase();
+    const username = document.getElementById('input-username').value.trim();
+    const token = document.getElementById('input-token').value.trim();
+
+    if (!kodeKegiatan) {
+      showErrorNotification('N/A', 'N/A', 'Kode Kegiatan wajib diisi terlebih dahulu!');
+      return;
     }
 
-  } catch (err) {
-    console.error('[AUTH FETCH ERROR]', err);
-    showErrorNotification(username, token, 'Gagal terhubung ke server database.');
-    clearUserDetailForm();
-    nextBox.classList.add('hidden');
-  } finally {
-    btnVerify.disabled = false;
-    btnVerify.textContent = '🔍 CEK VERIFIKASI PESERTA';
-  }
-});
+    if (!username || !token) {
+      showErrorNotification(username || 'N/A', token || 'N/A', 'Username dan User Token Reguler wajib diisi!');
+      return;
+    }
 
-/**
- * TAMPILKAN FAST-PASS NOTIFICATION (Card Emas)
- */
+    btnReguler.disabled = true;
+    btnReguler.textContent = '🔄 MEMERIKSA DATABASE REGULER...';
+
+    try {
+      let userData = null;
+
+      if (SCRIPT_URL) {
+        const response = await fetch(`${SCRIPT_URL}?sheet=${encodeURIComponent(kodeKegiatan)}&username=${encodeURIComponent(username)}&token=${encodeURIComponent(token)}`);
+        const result = await response.json();
+        if (result.success && result.data) {
+          userData = result.data;
+        }
+      }
+
+      if (userData && (userData.status === 'VERIFIED' || userData.status.includes('VERIFIED'))) {
+        showSuccessNotification(userData);
+        fillUserDetailForm(userData);
+        
+        sessionStorage.setItem('cbt_auth_user', JSON.stringify({
+          username: username,
+          token: token,
+          tokenRole: 'REGULER',
+          ...userData
+        }));
+
+        nextBox.classList.remove('hidden');
+      } else {
+        showErrorNotification(username, token);
+        clearUserDetailForm();
+        nextBox.classList.add('hidden');
+      }
+
+    } catch (err) {
+      console.error('[AUTH FETCH ERROR]', err);
+      showErrorNotification(username, token, 'Gagal terhubung ke server database Google Sheets.');
+      clearUserDetailForm();
+      nextBox.classList.add('hidden');
+    } finally {
+      btnReguler.disabled = false;
+      btnReguler.textContent = '🔍 CEK VERIFIKASI REGULER';
+    }
+  });
+}
+
+// =============================================================================
+// HELPER FUNCTIONS & UI RENDERERS
+// =============================================================================
 function showFastPassNotification(role, code) {
   notifBox.className = 'notif-card fastpass';
   notifBox.innerHTML = `
@@ -137,9 +169,6 @@ function showFastPassNotification(role, code) {
   notifBox.classList.remove('hidden');
 }
 
-/**
- * TAMPILKAN ERROR NOTIFICATION (Card Merah)
- */
 function showErrorNotification(uname, tokenCode, customMsg) {
   notifBox.className = 'notif-card error';
   notifBox.innerHTML = `
@@ -152,9 +181,6 @@ function showErrorNotification(uname, tokenCode, customMsg) {
   notifBox.classList.remove('hidden');
 }
 
-/**
- * TAMPILKAN SUCCESS NOTIFICATION (Card Hijau)
- */
 function showSuccessNotification(data) {
   notifBox.className = 'notif-card success';
   notifBox.innerHTML = `
@@ -163,9 +189,6 @@ function showSuccessNotification(data) {
   notifBox.classList.remove('hidden');
 }
 
-/**
- * ENABLE MANUAL FILLING UNTUK FAST-PASS (VIP / MASTER)
- */
 function enableManualFormFilling(role, kodeKegiatan, examConfig) {
   const fields = document.querySelectorAll('.field-autofill');
   fields.forEach(f => f.removeAttribute('readonly'));
@@ -220,9 +243,6 @@ function saveManualSession(role, kodeKegiatan) {
   }));
 }
 
-/**
- * AUTOFILL FIELDS 3 - 16 (REGULER)
- */
 function fillUserDetailForm(data) {
   const statusEl = document.getElementById('info-status');
   statusEl.value = data.status || '-';
@@ -244,9 +264,6 @@ function fillUserDetailForm(data) {
   document.getElementById('info-asalProvinsi').value = data.asalProvinsi || '-';
 }
 
-/**
- * KOSONGKAN FORM JIKA GAGAL
- */
 function clearUserDetailForm() {
   const statusEl = document.getElementById('info-status');
   statusEl.value = '';

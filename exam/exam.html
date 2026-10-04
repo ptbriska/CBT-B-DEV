@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layar Ujian Online - CBT Versi 3</title>
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- MathJax untuk render rumus Matematika & Eksakta -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+  <link rel="stylesheet" href="exam.css">
+</head>
+<body>
+
+  <!-- MAIN EXAM CONTAINER -->
+  <div id="cbt-exam-root" class="exam-root">
+
+    <!-- TOP HEADER NAVBAR -->
+    <header class="exam-header">
+      <div class="header-left">
+        <img id="cbt-brand-logo" src="https://lh3.googleusercontent.com/d/1TYEl9QOZV3EU5p3peLGaaUZcjrOISSSz" alt="Logo" class="exam-logo">
+        <div class="header-info">
+          <h2 id="disp-exam-title" class="exam-title">SIMULASI UJIAN CBT</h2>
+          <span id="disp-sub-title" class="exam-subtitle">Briska Education Corporation</span>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="timer-card" id="timer-box">
+          <span class="timer-icon">⏳</span>
+          <div class="timer-content">
+            <span class="timer-label">SISA WAKTU</span>
+            <span id="timer-display" class="timer-value">00:00:00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="user-pill">
+          <div class="user-avatar"><i class="fas fa-user-circle"></i></div>
+          <div class="user-details">
+            <span id="disp-user-name" class="user-name">Peserta Ujian</span>
+            <span id="disp-user-id" class="user-id">REGULER</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- EXAM BODY LAYOUT -->
+    <main class="exam-body">
+
+      <!-- LEFT AREA: QUESTION DISPLAY & INPUTS -->
+      <section class="question-container">
+        
+        <!-- QUESTION TOOLBAR (NO, BADGES, FONT SWITCHER) -->
+        <div class="q-header-bar">
+          <div class="q-number-box">
+            <span class="q-no-label">SOAL NO.</span>
+            <span id="q-num" class="q-no-val">1</span>
+          </div>
+
+          <div id="q-badges-container" class="q-badges">
+            <!-- Badges Section, Subtest, Level, Tipe Soal (Rendered via JS) -->
+          </div>
+
+          <div class="font-switcher">
+            <span class="font-label">Ukuran Teks:</span>
+            <button type="button" class="btn-font" data-size="small" onclick="setFontSize('small')">A-</button>
+            <button type="button" class="btn-font active" data-size="medium" onclick="setFontSize('medium')">A</button>
+            <button type="button" class="btn-font" data-size="large" onclick="setFontSize('large')">A+</button>
+          </div>
+        </div>
+
+        <!-- QUESTION CONTENT AREA -->
+        <div class="q-content-scroll">
+          <div id="q-text" class="q-text-body">
+            Memuat soal ujian...
+          </div>
+
+          <div id="q-image-container" class="q-image-box">
+            <!-- Gambar Soal (Rendered via JS) -->
+          </div>
+
+          <!-- DYNAMIC OPTIONS / INPUT AREA (1A - 5A) -->
+          <div id="options-box" class="options-container">
+            <!-- Dynamic Renderer Tipe Soal 1A s/d 5A -->
+          </div>
+        </div>
+
+        <!-- BOTTOM NAVIGATION & ACTION TOOLBAR -->
+        <footer class="q-footer-bar">
+          <div class="footer-left">
+            <button id="btn-prev" class="btn-nav btn-prev" onclick="navigasi(-1)">
+              <i class="fas fa-chevron-left"></i> Sebelumnya
+            </button>
+          </div>
+
+          <div class="footer-center">
+            <label class="doubt-toggle">
+              <input type="checkbox" id="chk-doubt" onchange="toggleDoubt()">
+              <span class="checkbox-custom"></span>
+              <span class="doubt-label-text">🟨 Ragu-Ragu</span>
+            </label>
+
+            <button id="btn-clear-ans" class="btn-clear" onclick="clearAnswer()">
+              <i class="fas fa-eraser"></i> Kosongkan Jawaban
+            </button>
+          </div>
+
+          <div class="footer-right">
+            <button id="btn-next" class="btn-nav btn-next" onclick="navigasi(1)">
+              Selanjutnya <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </footer>
+
+      </section>
+
+      <!-- RIGHT AREA: QUESTION NAVIGATION GRID & SUBMIT -->
+      <aside class="navigation-sidebar">
+        <div class="sidebar-card">
+          <button id="btn-selesai-top" class="btn-submit-main" onclick="bukaModalKonfirmasi()">
+            🏁 SELESAI UJIAN
+          </button>
+
+          <div class="grid-header">
+            <span>NAVIGASI SOAL</span>
+            <span id="answered-counter" class="answered-badge">0 / 0</span>
+          </div>
+
+          <div id="number-grid" class="number-grid">
+            <!-- Circle Buttons (Rendered via JS) -->
+          </div>
+
+          <!-- GRID LEGEND -->
+          <div class="grid-legend">
+            <div class="legend-item"><span class="lg-circle active"></span> Aktif</div>
+            <div class="legend-item"><span class="lg-circle answered"></span> Terjawab</div>
+            <div class="legend-item"><span class="lg-circle doubt"></span> Ragu</div>
+            <div class="legend-item"><span class="lg-circle unanswered"></span> Belum</div>
+          </div>
+        </div>
+      </aside>
+
+    </main>
+
+  </div>
+
+  <!-- MODAL KONFIRMASI SELESAI UJIAN (GLASSMORPISM) -->
+  <div id="modal-confirm" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-icon">📋</div>
+      <h3>Konfirmasi Pengumpulan Ujian</h3>
+      <p class="modal-desc">Periksa kembali ringkasan pengerjaan Anda sebelum mengakhiri sesi ujian:</p>
+
+      <div class="summary-box">
+        <div class="sum-item">
+          <span>Total Soal:</span>
+          <strong id="sum-total">0</strong>
+        </div>
+        <div class="sum-item">
+          <span>Sudah Dijawab:</span>
+          <strong id="sum-dijawab" class="text-success">0</strong>
+        </div>
+        <div class="sum-item">
+          <span>Belum Dijawab:</span>
+          <strong id="sum-kosong" class="text-danger">0</strong>
+        </div>
+      </div>
+
+      <div id="sum-warning-text" class="warning-alert hidden">
+        ⚠️ Masih ada soal yang belum dijawab!
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" onclick="tutupModalKonfirmasi()">Kembali Kerjakan</button>
+        <button id="btn-modal-submit" class="btn-modal-confirm" onclick="eksekusiSubmitUjian()">Ya, Kirim Jawaban</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PERINGATAN KECURANGAN (SECURITY OVERLAY) -->
+  <div id="modal-security-warning" class="modal-overlay security-overlay hidden">
+    <div class="modal-card security-card">
+      <div class="security-icon">🚨</div>
+      <h3 id="sec-title">PERINGATAN KECURANGAN!</h3>
+      <p id="sec-reason" class="sec-reason-text">Terdeteksi meninggalkan layar ujian.</p>
+
+      <div class="sec-counter-box">
+        Peringatan ke <span id="sec-count">1</span> dari <span id="sec-max">3</span>
+      </div>
+
+      <p id="sec-subtext" class="sec-subtext">Jika mencapai batas maksimal 3x, ujian Anda akan dikunci dan disubmit otomatis oleh sistem.</p>
+
+      <button id="btn-sec-ack" class="btn-sec-ack" onclick="tutupModalSecurity()">SAYA MENGERTI & KEMBALI UJIAN</button>
+    </div>
+  </div>
+
+  <!-- OVERLAY LOADING SUBMIT -->
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <div class="spinner-box">
+      <div class="neon-spinner"></div>
+      <p>Mengirim Jawaban & Menghitung Skor...</p>
+    </div>
+  </div>
+
+  <script src="security.js"></script>
+  <script src="scoring.js"></script>
+  <script src="cbt-engine.js"></script>
+</body>
+</html>
